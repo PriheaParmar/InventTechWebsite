@@ -22,7 +22,6 @@
   <div class="bg"></div>
   <div class="noise"></div>
 
-
   <!-- HEADER -->
   <header class="site-header" id="top">
     <a class="brand" href="#top" aria-label="InventTech Home">
@@ -84,69 +83,81 @@
     <!-- HERO -->
     <section class="section hero" id="home">
       <div class="container hero-grid">
+
+        <!-- LEFT -->
         <div class="hero-left">
-
-
           <h1 class="hero-title reveal" data-delay="80">
             Your Inventory <br> <span class="text-sheen">Our Management</span>
           </h1>
 
-          <p class="hero-text reveal" data-delay="160">
-            Streamline textile operations with InventTech. the all-in-one platform for managing masters, tracking
-            purchase orders, and staying in control of your business </p>
 
-          <div class="hero-cta reveal" data-delay="240">
-            <a class="btn primary" href="#demo">Get a Demo</a>
-            <a class="btn ghost" href="#product">Explore Product</a>
-          </div>
 
-          <div class="hero-metrics reveal" data-delay="320">
-            <div class="metric">
-              <div class="metric-num">2x</div>
-              <div class="metric-label">Faster delivery</div>
-            </div>
-            <div class="metric">
-              <div class="metric-num">99.9%</div>
-              <div class="metric-label">Uptime</div>
-            </div>
-            <div class="metric">
-              <div class="metric-num">SOC2</div>
-              <div class="metric-label">Security ready</div>
-            </div>
-          </div>
+
+
         </div>
 
-        <div class="hero-right">
+        <!-- CENTER (absolute background box) -->
+        <div class="hero-center">
           <div class="art-scatter reveal" id="artScatter" data-delay="140">
             <img class="art-img" src="box.png" alt="Box preview" />
             <canvas class="scatter-local" aria-hidden="true"></canvas>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="hero-right">
+          <div class="demo-callout reveal" data-delay="220">
+            <p class="hero-text reveal" data-delay="160">
+              Streamline textile operations with InventTech. the all-in-one platform for managing masters, tracking
+              purchase orders, and staying in control of your business
+            </p>
+
+          </div>
+          <div class="demo">
+            <p class>Have any question? <br>
+              schedule a demo</p>
+            <a class="btn primary demo-btn" href="#demo">Book a Demo</a>
           </div>
         </div>
       </div>
     </section>
 
     <!-- PRODUCT -->
-    <section class="section" id="product">
-      <div class="container">
-        <h2 class="section-title reveal">Product</h2>
-        <p class="section-text reveal" data-delay="80">
-          Everything you need to ship, measure, and improve — in one place.
-        </p>
+    <section class="section product-section" id="product">
+      <div class="container product-wrap">
 
-        <div class="card-grid" id="product-modules">
-          <article class="card reveal" data-delay="0">
-            <h3 class="card-title">Modules</h3>
-            <p class="card-text">Plug-and-play building blocks for teams and workflows.</p>
-          </article>
-          <article class="card reveal" data-delay="80">
-            <h3 class="card-title">Integrations</h3>
-            <p class="card-text">Connect your tools with a clean API and webhooks.</p>
-          </article>
-          <article class="card reveal" data-delay="160" id="product-security">
-            <h3 class="card-title">Security</h3>
-            <p class="card-text">Role-based access, audit logs, and secure defaults.</p>
-          </article>
+        <!-- LEFT -->
+        <div class="product-left">
+          <div class="product-top">
+            <span class="product-tag">PRODUCT</span>
+
+            <!-- Put your logo here -->
+            <div class="product-logo">
+              <!-- replace with your logo image -->
+              <img src="logo.png" alt="InventTech Logo" />
+            </div>
+          </div>
+
+          <!-- Word-by-word dark on scroll -->
+          <h2 class="product-headline" data-wordreveal>
+            InventTech brings inventory, purchase orders, and approvals into one clean dashboard for textile teams.
+          </h2>
         </div>
+
+        <!-- RIGHT -->
+        <div class="product-right">
+          <p>
+            InventTech is a web-based manufacturing and trading management system built to simplify daily operations for
+            textile and garment businesses. Manage all your masters—parties/vendors, jobbers, materials, types, shades,
+            firms, and locations—without messy spreadsheets.
+          </p>
+
+          <p>
+            Create and track purchase orders with approval status, maintain clean data across teams, and get operational
+            visibility in one place—so decisions become faster, work stays organized, and follow-ups reduce.
+          </p>
+        </div>
+
       </div>
     </section>
 
@@ -155,29 +166,54 @@
       <div class="container">
         <h2 class="section-title reveal">Features</h2>
         <p class="section-text reveal" data-delay="80">
-          Smooth UX + powerful backend features designed to scale.
+          Built for real textile workflows—clean masters, tracked approvals, and clear visibility across purchase and
+          inventory.
         </p>
 
-        <div class="split" id="features-automation">
-          <div class="split-left reveal" data-delay="0">
-            <h3 class="split-title">Automation that feels effortless</h3>
-            <p class="split-text">Trigger actions, route approvals, and reduce manual work.</p>
-            <ul class="list">
-              <li class="reveal" data-delay="80">Smart rules & approvals</li>
-              <li class="reveal" data-delay="140">Templates & presets</li>
-              <li class="reveal" data-delay="200">Audit-friendly history</li>
-            </ul>
-          </div>
+        <div class="card-grid">
+          <article class="card reveal" data-delay="0">
+            <h3 class="card-title">Centralized Masters</h3>
+            <p class="card-text">
+              Maintain parties/vendors, jobbers, materials, types, shades, firms, and locations in one clean system.
+            </p>
+          </article>
 
-          <div class="split-right reveal" data-delay="120" id="features-analytics">
-            <div class="panel">
-              <h4 class="panel-title">Live analytics</h4>
-              <p class="panel-text">Track key metrics with simple dashboards.</p>
-              <div class="panel-bars">
-                <span></span><span></span><span></span><span></span>
-              </div>
-            </div>
-          </div>
+          <article class="card reveal" data-delay="80">
+            <h3 class="card-title">PO Creation + Approval Status</h3>
+            <p class="card-text">
+              Generate purchase orders and track approval status so everyone knows what’s pending and what’s confirmed.
+            </p>
+          </article>
+
+          <article class="card reveal" data-delay="160">
+            <h3 class="card-title">Inventory Visibility</h3>
+            <p class="card-text">
+              Track yarn/greige/trim/finished inventory with location clarity—know availability before you commit.
+            </p>
+          </article>
+        </div>
+
+        <div class="card-grid" style="margin-top:14px">
+          <article class="card reveal" data-delay="0">
+            <h3 class="card-title">Fewer Errors, Cleaner Data</h3>
+            <p class="card-text">
+              Reduce duplicates and mistakes by managing everything from structured masters instead of scattered sheets.
+            </p>
+          </article>
+
+          <article class="card reveal" data-delay="80">
+            <h3 class="card-title">Faster Daily Operations</h3>
+            <p class="card-text">
+              Quick search + consistent workflows help teams work faster with less manual follow-up.
+            </p>
+          </article>
+
+          <article class="card reveal" data-delay="160">
+            <h3 class="card-title">One Dashboard, Better Control</h3>
+            <p class="card-text">
+              Get operational visibility in one place—so owners and managers can review and act faster.
+            </p>
+          </article>
         </div>
       </div>
     </section>

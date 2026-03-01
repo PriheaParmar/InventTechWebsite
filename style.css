@@ -1,5 +1,5 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap');
+
 /* =========================================================
    1) THEME / ROOT
 ========================================================= */
@@ -44,7 +44,7 @@ section {
 }
 
 /* =========================================================
-   3) BACKGROUND (your existing bg/noise can stay)
+   3) BACKGROUND
 ========================================================= */
 .bg {
     position: fixed;
@@ -131,7 +131,7 @@ section {
 }
 
 /* =========================================================
-   4) HEADER + BRAND ANIMATION (scroll-triggered)
+   4) HEADER + BRAND
 ========================================================= */
 .site-header {
     position: fixed;
@@ -150,7 +150,6 @@ section {
 
     padding: 12px 16px;
     border-radius: 999px;
-
 
     transition: transform .25s ease, background .25s ease, border-color .25s ease, padding .25s ease;
 }
@@ -186,9 +185,8 @@ section {
     filter: drop-shadow(0 0 18px rgba(255, 255, 255, .18));
 }
 
-
 /* =========================================================
-   5) NAV + DROPDOWN (hover + arrow)
+   5) NAV + DROPDOWN
 ========================================================= */
 .nav {
     display: flex;
@@ -236,7 +234,6 @@ section {
     transition: transform .18s ease, opacity .18s ease;
 }
 
-/* rotate arrow on open */
 .nav-item.has-sub:hover>.nav-link::after,
 .nav-item.has-sub:focus-within>.nav-link::after {
     transform: translateY(1px) rotate(180deg);
@@ -290,7 +287,6 @@ section {
     color: #fff;
 }
 
-/* show submenu on hover or keyboard focus */
 .nav-item.has-sub:hover>.nav-sub,
 .nav-item.has-sub:focus-within>.nav-sub {
     opacity: 1;
@@ -325,7 +321,6 @@ section {
 
 .btn.primary {
     background: linear-gradient(90deg,
-            rgba(var(--pink), .35),
             rgba(var(--blue), .28));
     border-color: rgba(255, 255, 255, .22);
 }
@@ -335,7 +330,6 @@ section {
     border-color: rgba(255, 255, 255, .14);
 }
 
-/* Mobile */
 @media (max-width: 760px) {
     .nav {
         display: none;
@@ -412,36 +406,29 @@ section {
 }
 
 /* =========================================================
-   7) HERO
+   7) HERO (FINAL LAYOUT: left/right corners + center absolute box)
 ========================================================= */
 .hero {
-    padding-top: 40px;
+    padding-top: 0px;
+    min-height: calc(100vh - 110px);
+    display: flex;
+    align-items: center;
 }
 
 .hero-grid {
-    display: grid;
-    grid-template-columns: 1.25fr .9fr;
-    gap: 18px;
-    align-items: center;
+    position: relative;
+    min-height: 620px;
 }
 
-@media (max-width: 900px) {
-    .hero-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.pill {
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 12px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, .14);
-    background: rgba(255, 255, 255, .06);
-    color: rgba(255, 255, 255, .88);
-    font-size: 12px;
-    letter-spacing: .06em;
-    width: fit-content;
+/* Left corner content */
+.hero-left {
+    position: absolute;
+    left: 0;
+    top: 30%;
+    transform: translateY(-50%);
+    z-index: 5;
+    padding-right: 24px;
+    /* border: 2px solid red; */
 }
 
 .hero-title {
@@ -453,18 +440,10 @@ section {
     font-weight: normal;
 }
 
-.hero-brand {
-    font-family: "Faculty Glyphic";
-    position: relative;
-    white-space: nowrap;
-    text-shadow: 0 0 26px rgba(var(--pink), .18);
-}
-
 .hero-text {
     margin: 0 0 18px;
     color: var(--text-dim);
-    line-height: 1.75;
-    max-width: 60ch;
+    line-height: 1.55;
 }
 
 .hero-cta {
@@ -499,246 +478,134 @@ section {
     margin-top: 4px;
 }
 
-/* Hero preview card */
-.hero-card {
-    border-radius: 22px;
-    border: 1px solid rgba(255, 255, 255, .14);
-    background: rgba(255, 255, 255, .06);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+/* Center absolute box */
+.hero-center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.art-scatter {
+    margin-top: 150px ;
+    position: relative;
+    width: min(500px, 40vw);
+    aspect-ratio: 1 / 1;
     overflow: hidden;
+    pointer-events: none;
+    object-fit: cover;
 }
 
-.hero-card-top {
-    display: flex;
-    gap: 8px;
-    padding: 14px 14px;
-    border-bottom: 1px solid rgba(255, 255, 255, .10);
-}
-
-.hero-card-top .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, .18);
-}
-
-.hero-card-body {
-    padding: 16px;
-}
-/* ===== Right-side image box + local scatter ===== */
-.hero-right{
-  display: flex;
-  justify-content: flex-end;
-}
-
-.art-scatter{
-  position: relative;
-  width: min(440px, 100%);
-  aspect-ratio: 1 / 1;
-  border-radius: 26px;
-
-  
-}
-
+/* image moved down so scatter looks like coming from box */
 .art-img{
-  margin-top: 20vh;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   display: block;
 
-  /* optional: makes image look more premium */
+  /* ✅ no cropping */
+  object-fit: contain;
+  object-position: center;
+
+  /* keep your “image down” effect (adjust value) */
+  transform: translateY(110px);
+
+  /* optional */
   filter: contrast(1.05) saturate(0.95);
 }
 
-/* particles ONLY inside the box */
-.scatter-local{
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-
-  /* dark scatter looks best with multiply/overlay */
-  mix-blend-mode: multiply;
-  opacity: .9;
-}
-.fake-line {
-    height: 10px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, .12);
-    margin-bottom: 10px;
+.scatter-local {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+    opacity: .9;
 }
 
-.fake-line.w80 {
-    width: 80%;
-}
-
-.fake-line.w65 {
-    width: 65%;
-}
-
-.fake-line.w55 {
-    width: 55%;
-}
-
-.fake-line.w40 {
-    width: 40%;
-}
-
-.fake-chart {
-    height: 140px;
-    border-radius: 16px;
-    background:
-        radial-gradient(60% 80% at 30% 40%, rgba(var(--pink), .12), transparent 60%),
-        radial-gradient(70% 90% at 70% 50%, rgba(var(--blue), .12), transparent 60%),
-        rgba(255, 255, 255, .06);
-    border: 1px solid rgba(255, 255, 255, .10);
-    margin: 12px 0;
-}
-
-/* Features split */
-.split {
-    display: grid;
-    grid-template-columns: 1.1fr .9fr;
-    gap: 14px;
-    align-items: start;
-}
-
-@media (max-width: 900px) {
-    .split {
-        grid-template-columns: 1fr;
-    }
-}
-
-.split-title {
-    margin: 0 0 8px;
-}
-
-.split-text {
-    margin: 0 0 12px;
-    color: var(--text-dim);
-    line-height: 1.7;
-}
-
-.list {
-    margin: 0;
-    padding-left: 18px;
-    color: rgba(255, 255, 255, .88);
-    line-height: 1.9;
-}
-
-.panel {
-    padding: 18px;
-    border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, .12);
-    background: rgba(255, 255, 255, .05);
-}
-
-.panel-title {
-    margin: 0 0 8px;
-}
-
-.panel-text {
-    margin: 0 0 14px;
-    color: var(--text-dim);
-}
-
-.panel-bars {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-}
-
-.panel-bars span {
-    height: 90px;
-    border-radius: 14px;
-    background: rgba(255, 255, 255, .10);
-    border: 1px solid rgba(255, 255, 255, .10);
-}
-
-/* Pricing */
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-}
-
-@media (max-width: 900px) {
-    .pricing-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.price-card {
-    padding: 18px;
-    border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, .12);
-    background: rgba(255, 255, 255, .06);
-}
-
-.price-card.featured {
-    border-color: rgba(255, 255, 255, .22);
-    box-shadow: 0 0 40px rgba(var(--pink), .08);
-}
-
-.price {
-    font-size: 28px;
-    margin: 8px 0 6px;
-    letter-spacing: -0.03em;
-}
-
-.muted {
-    color: var(--text-dim);
-}
-
-.faq {
-    margin-top: 18px;
-    padding: 18px;
-    border-radius: 18px;
-    border: 1px solid rgba(255, 255, 255, .12);
-    background: rgba(255, 255, 255, .05);
-}
-
-/* Demo form */
-.form {
+/* Right corner demo */
+.hero-right {
+    position: absolute;
+    right: 0;
+    top: 30%;
+    transform: translateY(-50%);
+    z-index: 5;
+    font-size: small;
+    font-weight: 200;
+    flex-direction: column;
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    /* border: 2px solid green; */
+}
+.demo{
+    display: flex;
+    justify-content: space-between;
+    /* border: 2px solid pink; */
+    width: 100%;
+    padding: 20px;
+    margin-top: -5vh;
+
+}
+.demo-callout {
+    width: min(500px, 28vw);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: 12px;
-    flex-wrap: wrap;
+    padding: 14px 14px;
+    border-radius: 18px;
 }
 
-.input {
-    flex: 1 1 220px;
-    padding: 12px 14px;
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, .14);
-    background: rgba(0, 0, 0, .22);
-    color: #fff;
-    outline: none;
+.demo-line {
+    color: rgba(255, 255, 255, .86);
+    font-size: 13px;
+    line-height: 1.4;
 }
 
-.input::placeholder {
-    color: rgba(255, 255, 255, .55);
+.demo-btn {
+    padding: 10px 16px;
+    white-space: nowrap;
 }
 
-.contact-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 14px;
-}
-
+/* Mobile stack */
 @media (max-width: 900px) {
-    .contact-grid {
+    .hero-grid {
+        position: static;
+        min-height: auto;
+        display: grid;
         grid-template-columns: 1fr;
+        gap: 18px;
     }
-}
 
-.footer {
-    padding: 30px 0 46px;
-    border-top: 1px solid rgba(255, 255, 255, .10);
+    .hero-left,
+    .hero-right {
+        position: static;
+        transform: none;
+        max-width: none;
+        padding-right: 0;
+    }
+
+    .hero-center {
+        position: static;
+        pointer-events: auto;
+    }
+
+    .art-scatter {
+        width: min(520px, 100%);
+        pointer-events: auto;
+    }
+
+    .demo-callout {
+        width: 100%;
+        flex-direction: column;
+        text-align: center;
+        align-items: stretch;
+    }
 }
 
 /* =========================================================
-   8) SCROLL REVEAL ANIMATIONS (IntersectionObserver)
+   8) SCROLL REVEAL ANIMATIONS
 ========================================================= */
 .reveal {
     opacity: 0;
@@ -757,7 +624,6 @@ section {
     filter: blur(0);
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
@@ -776,7 +642,7 @@ section {
 }
 
 /* =========================================================
-   9) SPLASH (keep your existing splash rules)
+   9) SPLASH
 ========================================================= */
 body.splash-open {
     overflow: hidden;
@@ -819,46 +685,228 @@ body.splash-open {
     }
 }
 
-/* ===== Satin / Chrome text effect (like your screenshot) ===== */
+/* =========================================================
+   10) TEXT SHEEN
+========================================================= */
 .text-sheen {
-  /* required for background-clip to work nicely */
-  display: inline-block;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+    display: inline-block;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
 
-  /* base vertical satin + moving highlight layer */
-  background-image:
-    linear-gradient(180deg,
-      rgba(255,255,255,.96) 0%,
-      rgba(255,255,255,.86) 30%,
-      rgba(255,175,205,.62) 70%,
-      rgba(255,255,255,.92) 100%),
-    linear-gradient(120deg,
-      transparent 0%,
-      rgba(255,255,255,0) 40%,
-      rgba(255,255,255,.55) 50%,
-      rgba(255,255,255,0) 60%,
-      transparent 100%);
+    background-image:
+        linear-gradient(180deg,
+            rgba(255, 255, 255, .96) 0%,
+            rgba(255, 255, 255, .86) 30%,
+            rgba(255, 175, 205, .62) 70%,
+            rgba(255, 255, 255, .92) 100%),
+        linear-gradient(120deg,
+            transparent 0%,
+            rgba(255, 255, 255, 0) 40%,
+            rgba(255, 255, 255, .55) 50%,
+            rgba(255, 255, 255, 0) 60%,
+            transparent 100%);
 
-  background-size: 100% 100%, 260% 100%;
-  background-position: 0 0, -140% 0;
-  background-blend-mode: normal, screen;
+    background-size: 100% 100%, 260% 100%;
+    background-position: 0 0, -140% 0;
+    background-blend-mode: normal, screen;
 
-  -webkit-background-clip: text;
-  background-clip: text;
+    -webkit-background-clip: text;
+    background-clip: text;
 
-  /* slight depth like the image */
-  text-shadow: 0 14px 38px rgba(0,0,0,.55);
+    text-shadow: 0 14px 38px rgba(0, 0, 0, .55);
 }
 
-/* shine sweep triggers when element becomes visible (your scroll reveal adds .in-view) */
 .reveal.text-sheen.in-view {
-  animation: sheenSweep 1.2s ease-out .1s both;
+    animation: sheenSweep 1.2s ease-out .1s both;
 }
 
 @keyframes sheenSweep {
-  to {
-    background-position: 0 0, 140% 0;
-  }
+    to {
+        background-position: 0 0, 140% 0;
+    }
 }
 
+/* =========================================================
+   11) NAVBAR ENTRANCE AFTER SPLASH
+========================================================= */
+.site-header,
+.site-header .brand,
+.site-header .nav-link,
+.site-header .actions .btn {
+    transition: opacity .7s cubic-bezier(.2, .9, .2, 1),
+        transform .7s cubic-bezier(.2, .9, .2, 1);
+    will-change: opacity, transform;
+}
+
+body.splash-open .site-header {
+    opacity: 0;
+    transform: translateY(-22px) scale(.98);
+    pointer-events: none;
+}
+
+body.splash-open .site-header .brand,
+body.splash-open .site-header .nav-link,
+body.splash-open .site-header .actions .btn {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition-delay: 0ms !important;
+}
+
+/* stagger */
+body:not(.splash-open) .nav-list .nav-item:nth-child(1) .nav-link {
+    transition-delay: 80ms;
+}
+
+body:not(.splash-open) .nav-list .nav-item:nth-child(2) .nav-link {
+    transition-delay: 140ms;
+}
+
+body:not(.splash-open) .nav-list .nav-item:nth-child(3) .nav-link {
+    transition-delay: 200ms;
+}
+
+body:not(.splash-open) .nav-list .nav-item:nth-child(4) .nav-link {
+    transition-delay: 260ms;
+}
+
+body:not(.splash-open) .nav-list .nav-item:nth-child(5) .nav-link {
+    transition-delay: 320ms;
+}
+
+body:not(.splash-open) .site-header .actions .btn {
+    transition-delay: 360ms;
+}
+
+body:not(.splash-open) .site-header .brand {
+    transition-delay: 40ms;
+}
+
+/* =========================
+   PERFORMANCE: scroll-reactive neon (no constant drift)
+========================= */
+
+/* stop heavy continuous animation */
+.bg::before{
+  animation: none !important;
+  /* slightly lighter blur = smoother */
+  filter: blur(60px) saturate(150%) !important;
+
+  /* move by scroll via CSS variables */
+  transform: translate3d(calc(var(--sx, 0) * 1px), calc(var(--sy, 0) * 1px), 0) scale(1.04);
+  will-change: transform;
+}
+
+/* optional: make noise lighter (less GPU load) */
+.noise{ opacity: .06 !important; }
+
+
+.product-copy{ max-width: 72ch; }
+.product-bullets{
+  margin: 0 0 18px;
+  padding-left: 18px;
+  color: rgba(255,255,255,.84);
+  line-height: 1.9;
+}
+.product-bullets li{ margin: 6px 0; }
+
+
+/* =========================================================
+   PRODUCT LAYOUT (like reference)
+========================================================= */
+.product-section{
+  padding: 90px 0;
+}
+
+.product-wrap{
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.product-top{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.product-tag{
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.82);
+  font-size: 12px;
+  letter-spacing: .12em;
+}
+
+.product-logo{
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.product-logo img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Left big text (starts same tone as right) */
+.product-headline{
+  margin: 0;
+  font-family: "Outfit";
+  font-weight: 600;
+  font-size: clamp(34px, 4.2vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+/* Right paragraphs */
+.product-right p{
+  margin: 0 0 18px;
+  color: rgba(255,255,255,.68);
+  line-height: 1.9;
+  font-size: 15px;
+  max-width: 56ch;
+}
+
+/* =========================================================
+   WORD-BY-WORD DARKEN ON SCROLL
+========================================================= */
+.wordreveal{
+  color: rgba(255,255,255,.68); /* same as right side */
+}
+
+.wordreveal .w{
+  display: inline-block;
+  margin-right: .22em;
+  color: rgba(255,255,255,.55);
+  transition: color .22s ease;
+  will-change: color;
+}
+
+/* “dark” in your theme = more solid/strong text */
+.wordreveal .w.on{
+  color: rgba(255,255,255,.95);
+}
+
+/* responsive */
+@media (max-width: 900px){
+  .product-wrap{
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .product-right p{
+    max-width: none;
+  }
+}
