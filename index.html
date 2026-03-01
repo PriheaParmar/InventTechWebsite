@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>InventTech.</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="/favicon.ico.png" />
+</head>
+
+<body class="splash-open">
+
+  <!-- SPLASH INTRO -->
+  <div id="splash" class="splash" aria-label="InventTech intro">
+    <div class="splash-card">
+      <h1 class="splash-logo">InventTech.</h1>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <div class="bg"></div>
+  <div class="noise"></div>
+
+
+  <!-- HEADER -->
+  <header class="site-header" id="top">
+    <a class="brand" href="#top" aria-label="InventTech Home">
+      <span class="brand-text">InventTech.</span>
+    </a>
+
+    <nav class="nav" aria-label="Primary navigation">
+      <ul class="nav-list">
+        <li class="nav-item has-sub">
+          <a class="nav-link" href="#product" aria-haspopup="true" aria-expanded="false">Product</a>
+          <div class="nav-sub" role="menu" aria-label="Product submenu">
+            <a href="#product" role="menuitem">Overview</a>
+            <a href="#product-modules" role="menuitem">Modules</a>
+            <a href="#product-security" role="menuitem">Security</a>
+          </div>
+        </li>
+
+        <li class="nav-item has-sub">
+          <a class="nav-link" href="#features" aria-haspopup="true" aria-expanded="false">Features</a>
+          <div class="nav-sub" role="menu" aria-label="Features submenu">
+            <a href="#features" role="menuitem">Highlights</a>
+            <a href="#features-automation" role="menuitem">Automation</a>
+            <a href="#features-analytics" role="menuitem">Analytics</a>
+          </div>
+        </li>
+
+        <li class="nav-item has-sub">
+          <a class="nav-link" href="#solutions" aria-haspopup="true" aria-expanded="false">Solutions</a>
+          <div class="nav-sub" role="menu" aria-label="Solutions submenu">
+            <a href="#solutions" role="menuitem">By Team</a>
+            <a href="#solutions-industry" role="menuitem">By Industry</a>
+            <a href="#solutions-scale" role="menuitem">Scale</a>
+          </div>
+        </li>
+
+        <li class="nav-item has-sub">
+          <a class="nav-link" href="#pricing" aria-haspopup="true" aria-expanded="false">Pricing</a>
+          <div class="nav-sub" role="menu" aria-label="Pricing submenu">
+            <a href="#pricing" role="menuitem">Plans</a>
+            <a href="#pricing-faq" role="menuitem">FAQ</a>
+            <a href="#demo" role="menuitem">Talk to Sales</a>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#contact">Contact</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a class="btn" href="#demo">Book a Demo</a>
+    </div>
+  </header>
+
+  <!-- PAGE CONTENT -->
+  <main class="page">
+
+    <!-- HERO -->
+    <section class="section hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-left">
+
+
+          <h1 class="hero-title reveal" data-delay="80">
+            Your Inventory <br> <span class="text-sheen">Our Management</span>
+          </h1>
+
+          <p class="hero-text reveal" data-delay="160">
+            Streamline textile operations with InventTech. the all-in-one platform for managing masters, tracking
+            purchase orders, and staying in control of your business </p>
+
+          <div class="hero-cta reveal" data-delay="240">
+            <a class="btn primary" href="#demo">Get a Demo</a>
+            <a class="btn ghost" href="#product">Explore Product</a>
+          </div>
+
+          <div class="hero-metrics reveal" data-delay="320">
+            <div class="metric">
+              <div class="metric-num">2x</div>
+              <div class="metric-label">Faster delivery</div>
+            </div>
+            <div class="metric">
+              <div class="metric-num">99.9%</div>
+              <div class="metric-label">Uptime</div>
+            </div>
+            <div class="metric">
+              <div class="metric-num">SOC2</div>
+              <div class="metric-label">Security ready</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="art-scatter reveal" id="artScatter" data-delay="140">
+            <img class="art-img" src="box.png" alt="Box preview" />
+            <canvas class="scatter-local" aria-hidden="true"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT -->
+    <section class="section" id="product">
+      <div class="container">
+        <h2 class="section-title reveal">Product</h2>
+        <p class="section-text reveal" data-delay="80">
+          Everything you need to ship, measure, and improve — in one place.
+        </p>
+
+        <div class="card-grid" id="product-modules">
+          <article class="card reveal" data-delay="0">
+            <h3 class="card-title">Modules</h3>
+            <p class="card-text">Plug-and-play building blocks for teams and workflows.</p>
+          </article>
+          <article class="card reveal" data-delay="80">
+            <h3 class="card-title">Integrations</h3>
+            <p class="card-text">Connect your tools with a clean API and webhooks.</p>
+          </article>
+          <article class="card reveal" data-delay="160" id="product-security">
+            <h3 class="card-title">Security</h3>
+            <p class="card-text">Role-based access, audit logs, and secure defaults.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section" id="features">
+      <div class="container">
+        <h2 class="section-title reveal">Features</h2>
+        <p class="section-text reveal" data-delay="80">
+          Smooth UX + powerful backend features designed to scale.
+        </p>
+
+        <div class="split" id="features-automation">
+          <div class="split-left reveal" data-delay="0">
+            <h3 class="split-title">Automation that feels effortless</h3>
+            <p class="split-text">Trigger actions, route approvals, and reduce manual work.</p>
+            <ul class="list">
+              <li class="reveal" data-delay="80">Smart rules & approvals</li>
+              <li class="reveal" data-delay="140">Templates & presets</li>
+              <li class="reveal" data-delay="200">Audit-friendly history</li>
+            </ul>
+          </div>
+
+          <div class="split-right reveal" data-delay="120" id="features-analytics">
+            <div class="panel">
+              <h4 class="panel-title">Live analytics</h4>
+              <p class="panel-text">Track key metrics with simple dashboards.</p>
+              <div class="panel-bars">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTIONS -->
+    <section class="section" id="solutions">
+      <div class="container">
+        <h2 class="section-title reveal">Solutions</h2>
+        <p class="section-text reveal" data-delay="80">
+          Built for startups, enterprises, and everyone in between.
+        </p>
+
+        <div class="card-grid" id="solutions-industry">
+          <article class="card reveal" data-delay="0">
+            <h3 class="card-title">Teams</h3>
+            <p class="card-text">Product, ops, sales — align work across departments.</p>
+          </article>
+          <article class="card reveal" data-delay="80">
+            <h3 class="card-title">Industries</h3>
+            <p class="card-text">SaaS, services, ecommerce, and more.</p>
+          </article>
+          <article class="card reveal" data-delay="160" id="solutions-scale">
+            <h3 class="card-title">Scale</h3>
+            <p class="card-text">From 5 people to 5000 with consistent workflows.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section" id="pricing">
+      <div class="container">
+        <h2 class="section-title reveal">Pricing</h2>
+        <p class="section-text reveal" data-delay="80">
+          Simple plans. Upgrade when you grow.
+        </p>
+
+        <div class="pricing-grid">
+          <article class="price-card reveal" data-delay="0">
+            <h3>Starter</h3>
+            <p class="price">₹0</p>
+            <p class="muted">For trying things out</p>
+            <a class="btn ghost" href="#demo">Try</a>
+          </article>
+
+          <article class="price-card featured reveal" data-delay="80">
+            <h3>Pro</h3>
+            <p class="price">₹999</p>
+            <p class="muted">For teams that ship</p>
+            <a class="btn primary" href="#demo">Choose Pro</a>
+          </article>
+
+          <article class="price-card reveal" data-delay="160">
+            <h3>Enterprise</h3>
+            <p class="price">Custom</p>
+            <p class="muted">Security & scale</p>
+            <a class="btn ghost" href="#demo">Contact Sales</a>
+          </article>
+        </div>
+
+        <div class="faq reveal" data-delay="140" id="pricing-faq">
+          <h3 class="faq-title">FAQ</h3>
+          <p class="muted">Add your FAQs here later.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEMO -->
+    <section class="section" id="demo">
+      <div class="container">
+        <h2 class="section-title reveal">Book a Demo</h2>
+        <p class="section-text reveal" data-delay="80">
+          Share your email and we’ll reach out.
+        </p>
+
+        <form class="form reveal" data-delay="140">
+          <input class="input" type="text" placeholder="Your name" />
+          <input class="input" type="email" placeholder="Email address" />
+          <button class="btn primary" type="button">Request Demo</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section" id="contact">
+      <div class="container">
+        <h2 class="section-title reveal">Contact</h2>
+        <p class="section-text reveal" data-delay="80">
+          Have a question? Reach out anytime.
+        </p>
+
+        <div class="contact-grid">
+          <div class="card reveal" data-delay="0">
+            <h3 class="card-title">Email</h3>
+            <p class="card-text">hello@inventtech.com</p>
+          </div>
+          <div class="card reveal" data-delay="80">
+            <h3 class="card-title">Phone</h3>
+            <p class="card-text">+91 00000 00000</p>
+          </div>
+          <div class="card reveal" data-delay="160">
+            <h3 class="card-title">Location</h3>
+            <p class="card-text">India</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p class="muted">© <span id="year"></span> InventTech.</p>
+      </div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
