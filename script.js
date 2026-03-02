@@ -1,6 +1,13 @@
 "use strict";
 
-// splash duration
+/* =========================================================
+   FLAGS
+========================================================= */
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* =========================================================
+   SPLASH + FOOTER YEAR
+========================================================= */
 const SPLASH_MS = 1400;
 
 window.addEventListener("load", () => {
@@ -28,19 +35,32 @@ window.addEventListener("load", () => {
   setTimeout(removeSplash, SPLASH_MS + 2500);
 });
 
-// header scroll animation
-const header = document.querySelector(".site-header");
-const onHeaderScroll = () => {
+/* =========================================================
+   HEADER SHRINK ON SCROLL
+========================================================= */
+(() => {
+  const header = document.querySelector(".site-header");
   if (!header) return;
-  header.classList.toggle("scrolled", window.scrollY > 20);
-};
-onHeaderScroll();
-window.addEventListener("scroll", onHeaderScroll, { passive: true });
 
-// scroll reveal
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const onScroll = () => header.classList.toggle("scrolled", window.scrollY > 20);
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+})();
 
-if (!reducedMotion && "IntersectionObserver" in window) {
+/* =========================================================
+   REVEAL ANIMATIONS
+========================================================= */
+(() => {
+  if (reducedMotion) {
+    document.querySelectorAll(".reveal").forEach((el) => el.classList.add("in-view"));
+    return;
+  }
+
+  if (!("IntersectionObserver" in window)) {
+    document.querySelectorAll(".reveal").forEach((el) => el.classList.add("in-view"));
+    return;
+  }
+
   const io = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -58,34 +78,258 @@ if (!reducedMotion && "IntersectionObserver" in window) {
     if (delay) el.style.transitionDelay = `${delay}ms`;
     io.observe(el);
   });
-} else {
-  document.querySelectorAll(".reveal").forEach((el) => el.classList.add("in-view"));
-}
-
-// navbar aria helper
-document.querySelectorAll(".nav-item.has-sub").forEach((item) => {
-  const link = item.querySelector(".nav-link");
-  if (!link) return;
-
-  const setExpanded = (v) => link.setAttribute("aria-expanded", v ? "true" : "false");
-
-  item.addEventListener("mouseenter", () => setExpanded(true));
-  item.addEventListener("mouseleave", () => setExpanded(false));
-  item.addEventListener("focusin", () => setExpanded(true));
-  item.addEventListener("focusout", (e) => {
-    if (!item.contains(e.relatedTarget)) setExpanded(false);
-  });
-});
+})();
 
 /* =========================================================
-   LOCAL SCATTER (dark, free shape)
-   - no vertical movement
-   - looks like coming from box top area
+   NAV DROPDOWN aria-expanded
+========================================================= */
+(() => {
+  document.querySelectorAll(".nav-item.has-sub").forEach((item) => {
+    const link = item.querySelector(".nav-link");
+    if (!link) return;
+
+    const setExpanded = (v) => link.setAttribute("aria-expanded", v ? "true" : "false");
+
+    item.addEventListener("mouseenter", () => setExpanded(true));
+    item.addEventListener("mouseleave", () => setExpanded(false));
+    item.addEventListener("focusin", () => setExpanded(true));
+    item.addEventListener("focusout", (e) => {
+      if (!item.contains(e.relatedTarget)) setExpanded(false);
+    });
+  });
+})();
+
+/* =========================================================
+   SMOOTH SCROLL FOR HASH LINKS
+========================================================= */
+(() => {
+  if (reducedMotion) return;
+
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const id = a.getAttribute("href");
+      if (!id || id === "#") return;
+
+      const el = document.querySelector(id);
+      if (!el) return;
+
+      e.preventDefault();
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+})();
+
+/* =========================================================
+   BG DRIFT (fast transform only)
+========================================================= */
+(() => {
+  if (reducedMotion) return;
+  const bg = document.querySelector(".bg");
+  if (!bg) return;
+
+  let lastY = window.scrollY;
+  let tx = 0, ty = 0;
+  let x = 0, y = 0;
+  let running = false;
+
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  function loop() {
+    x += (tx - x) * 0.08;
+    y += (ty - y) * 0.08;
+
+    bg.style.setProperty("--sx", x.toFixed(2));
+    bg.style.setProperty("--sy", y.toFixed(2));
+
+    const still = Math.abs(tx - x) + Math.abs(ty - y) > 0.15;
+    if (still) requestAnimationFrame(loop);
+    else running = false;
+  }
+
+  window.addEventListener("scroll", () => {
+    const sy = window.scrollY;
+    const d = sy - lastY;
+    lastY = sy;
+
+    tx = clamp(Math.sin(sy * 0.002) * 18, -18, 18);
+    ty = clamp(ty + (-d * 0.12), -26, 26);
+
+    if (!running) { running = true; requestAnimationFrame(loop); }
+  }, { passive: true });
+
+  if (!running) { running = true; requestAnimationFrame(loop); }
+})();
+
+/* =========================================================
+   NEON STATES
+   - fade out after leaving top
+   - when pricing approaches: enter from sides (center)
+========================================================= */
+(() => {
+  if (reducedMotion) return;
+
+  const pricing = document.getElementById("pricing");
+  if (!pricing) return;
+
+  const body = document.body;
+  let inPricing = false;
+
+  const updateAway = () => {
+    if (inPricing) return;
+    const vh = Math.max(1, window.innerHeight);
+    const shouldHide = window.scrollY > vh * 0.85;
+    body.classList.toggle("neon-away", shouldHide);
+  };
+
+  const enterPricing = () => {
+    body.classList.remove("neon-away");
+    body.classList.add("neon-pricing-prep");
+
+    requestAnimationFrame(() => {
+      body.classList.add("neon-pricing");
+      body.classList.remove("neon-pricing-prep");
+    });
+  };
+
+  const exitPricing = () => {
+    body.classList.remove("neon-pricing");
+    body.classList.remove("neon-pricing-prep");
+    updateAway();
+  };
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      const e = entries[0];
+      if (!e) return;
+
+      if (e.isIntersecting) {
+        if (!inPricing) {
+          inPricing = true;
+          enterPricing();
+        }
+      } else {
+        if (inPricing) {
+          inPricing = false;
+          exitPricing();
+        }
+      }
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -35% 0px" }
+  );
+
+  io.observe(pricing);
+
+  window.addEventListener("scroll", updateAway, { passive: true });
+  window.addEventListener("resize", updateAway, { passive: true });
+  updateAway();
+})();
+
+/* =========================================================
+   WORD-BY-WORD DARKEN ON SCROLL
+========================================================= */
+(() => {
+  if (reducedMotion) return;
+
+  const targets = Array.from(document.querySelectorAll("[data-wordreveal]"));
+  if (!targets.length) return;
+
+  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+  const items = targets.map((el) => {
+    const text = (el.textContent || "").trim();
+    const words = text.split(/\s+/).filter(Boolean);
+
+    el.textContent = "";
+    el.classList.add("wordreveal");
+
+    const spans = words.map((w) => {
+      const s = document.createElement("span");
+      s.className = "w";
+      s.textContent = w;
+      el.appendChild(s);
+      return s;
+    });
+
+    return { el, spans };
+  });
+
+  let ticking = false;
+
+  function update() {
+    ticking = false;
+    const vh = window.innerHeight;
+
+    for (const it of items) {
+      const r = it.el.getBoundingClientRect();
+      const start = vh * 0.70;
+      const end = vh * 0.25;
+
+      const p = clamp((start - r.top) / (start - end), 0, 1);
+      const n = it.spans.length;
+      const onCount = Math.floor(p * n);
+
+      for (let i = 0; i < n; i++) it.spans[i].classList.toggle("on", i < onCount);
+    }
+  }
+
+  function onScroll() {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll);
+  update();
+})();
+
+/* =========================================================
+   FEATURES STORY: active step + counter
+========================================================= */
+(() => {
+  const root = document.querySelector("#features.features-story");
+  if (!root) return;
+
+  const steps = Array.from(root.querySelectorAll(".step"));
+  const counterEl = document.getElementById("featureCounter");
+
+  if (!("IntersectionObserver" in window) || steps.length === 0) {
+    steps[0]?.classList.add("active");
+    if (counterEl) counterEl.textContent = "01";
+    return;
+  }
+
+  const setActive = (id) => {
+    steps.forEach(s => s.classList.toggle("active", s.id === id));
+    const active = steps.find(s => s.id === id);
+    const n = active?.querySelector(".step-num")?.textContent?.trim();
+    if (counterEl && n) counterEl.textContent = n;
+  };
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      let best = null;
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
+      }
+      if (best?.target?.id) setActive(best.target.id);
+    },
+    { threshold: [0.35, 0.55, 0.75] }
+  );
+
+  steps.forEach(s => io.observe(s));
+  setActive(steps[0].id);
+})();
+
+/* =========================================================
+   LOCAL SCATTER (your existing effect)
 ========================================================= */
 (() => {
   const wrap = document.getElementById("artScatter");
   if (!wrap) return;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (reducedMotion) return;
 
   const canvas = wrap.querySelector(".scatter-local");
   if (!canvas) return;
@@ -103,15 +347,13 @@ document.querySelectorAll(".nav-item.has-sub").forEach((item) => {
   const isMobile = window.matchMedia("(max-width: 900px)").matches;
   const COUNT = isMobile ? 220 : 380;
 
-  // ✅ Focus area near the TOP opening of box
   const FOCUS_X = 0.52;
-  const FOCUS_Y = 0.36;   // higher = nearer top
+  const FOCUS_Y = 0.36;
   const SPREAD_X = 0.50;
-  const SPREAD_Y = 0.32;  // tighter vertically so it feels like coming out
+  const SPREAD_Y = 0.32;
 
   const BASE_SPRING = 0.0048;
   const FRICTION = 0.90;
-  const GRAVITY = 0.0;    // ✅ no up/down drift
 
   let DPR = 1, W = 0, H = 0;
   let active = true;
@@ -220,15 +462,13 @@ document.querySelectorAll(".nav-item.has-sub").forEach((item) => {
     scatterIO.observe(wrap);
   }
 
-  function onScroll() {
+  window.addEventListener("scroll", () => {
     const y = window.scrollY;
     const delta = y - lastY;
     lastY = y;
     scrollImpulse = Math.max(-120, Math.min(120, delta));
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
+  }, { passive: true });
 
-  // pointer disturb inside box
   let pointerInside = false;
   const mouse = { x: -9999, y: -9999 };
 
@@ -242,7 +482,6 @@ document.querySelectorAll(".nav-item.has-sub").forEach((item) => {
     mouse.y = e.clientY - r.top;
   }, { passive: true });
 
-  // throttled FPS
   let lastFrame = 0;
   const FPS = 32;
   const FRAME_MS = 1000 / FPS;
@@ -287,28 +526,22 @@ document.querySelectorAll(".nav-item.has-sub").forEach((item) => {
 
     const cx = W * FOCUS_X;
     const cy = H * FOCUS_Y;
-
     const energy = Math.min(1, Math.abs(scrollImpulse) / 90);
-
-    // scroll expand/contract (no up/down)
     const expand = scrollImpulse * 0.00009;
 
     for (const p of particles) {
       p.vx += (p.ax - p.x) * p.spring;
       p.vy += (p.ay - p.y) * p.spring;
 
-      // shimmer (very tiny vertical so it won't look like bobbing)
       const n1 = Math.sin(t * 0.0012 + p.phase);
       const n2 = Math.cos(t * 0.0016 + p.phase * 1.7);
       p.vx += n1 * 0.004 * p.z;
       p.vy += n2 * 0.0016 * p.z;
 
-      // expand/contract from focus (feels like burst area)
       const dx = p.x - cx, dy = p.y - cy;
       p.vx += dx * expand * p.z;
       p.vy += dy * expand * p.z;
 
-      // pointer disturb
       if (pointerInside) {
         const mdx = p.x - mouse.x, mdy = p.y - mouse.y;
         const d2 = mdx * mdx + mdy * mdy;
@@ -323,11 +556,9 @@ document.querySelectorAll(".nav-item.has-sub").forEach((item) => {
 
       p.vx *= FRICTION;
       p.vy *= FRICTION;
-      p.vy += GRAVITY;
 
       p.x += p.vx;
       p.y += p.vy;
-
       p.rot += p.spin;
 
       drawParticle(p, energy);
@@ -339,150 +570,4 @@ document.querySelectorAll(".nav-item.has-sub").forEach((item) => {
   resize();
   window.addEventListener("resize", resize);
   requestAnimationFrame(tick);
-})();
-
-
-/* =========================
-   SCROLL-REACTIVE NEON (smooth, low-lag)
-   - Updates CSS vars --sx/--sy
-   - Runs ONLY while scrolling
-========================= */
-(() => {
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) return;
-
-  const bg = document.querySelector(".bg");
-  if (!bg) return;
-
-  let lastY = window.scrollY;
-  let targetX = 0, targetY = 0;
-  let x = 0, y = 0;
-  let running = false;
-
-  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-
-  function loop() {
-    // ease
-    x += (targetX - x) * 0.10;
-    y += (targetY - y) * 0.10;
-
-    // decay targets so it settles
-    targetX *= 0.90;
-    targetY *= 0.88;
-
-    bg.style.setProperty("--sx", x.toFixed(2));
-    bg.style.setProperty("--sy", y.toFixed(2));
-
-    const stillMoving =
-      Math.abs(x) > 0.08 || Math.abs(y) > 0.08 ||
-      Math.abs(targetX) > 0.08 || Math.abs(targetY) > 0.08;
-
-    if (stillMoving) requestAnimationFrame(loop);
-    else running = false;
-  }
-
-  window.addEventListener("scroll", () => {
-    const sy = window.scrollY;
-    const delta = sy - lastY;
-    lastY = sy;
-
-    // push neon opposite to scroll a bit (feels reactive)
-    targetY = clamp(targetY + (-delta * 0.18), -55, 55);
-
-    // tiny side drift (smooth, not random ugly)
-    targetX = clamp(Math.sin(sy * 0.002) * 24, -24, 24);
-
-    if (!running) {
-      running = true;
-      requestAnimationFrame(loop);
-    }
-  }, { passive: true });
-})();
-
-/* Smooth scroll for navbar links (nice + consistent) */
-(() => {
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) return;
-
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener("click", (e) => {
-      const id = a.getAttribute("href");
-      if (!id || id === "#") return;
-
-      const el = document.querySelector(id);
-      if (!el) return;
-
-      e.preventDefault();
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  });
-})();
-
-/* =========================================================
-   WORD-BY-WORD DARKEN ON SCROLL (smooth, lightweight)
-========================================================= */
-(() => {
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) return;
-
-  const targets = Array.from(document.querySelectorAll("[data-wordreveal]"));
-  if (!targets.length) return;
-
-  const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-
-  // Split text into word spans once
-  const items = targets.map(el => {
-    const text = (el.textContent || "").trim();
-    const words = text.split(/\s+/).filter(Boolean);
-
-    el.textContent = "";
-    el.classList.add("wordreveal");
-
-    const spans = words.map(w => {
-      const s = document.createElement("span");
-      s.className = "w";
-      s.textContent = w;
-      el.appendChild(s);
-      return s;
-    });
-
-    return { el, spans };
-  });
-
-  let ticking = false;
-
-  function update() {
-    ticking = false;
-
-    const vh = window.innerHeight;
-
-    for (const it of items) {
-      const r = it.el.getBoundingClientRect();
-
-      // Start when headline is near center, finish when it passes
-      const start = vh * 0.70; // begin darkening
-      const end   = vh * 0.25; // fully dark by here
-
-      // progress 0..1
-      const p = clamp((start - r.top) / (start - end), 0, 1);
-
-      const n = it.spans.length;
-      const onCount = Math.floor(p * n);
-
-      for (let i = 0; i < n; i++) {
-        it.spans[i].classList.toggle("on", i < onCount);
-      }
-    }
-  }
-
-  function onScroll() {
-    if (!ticking) {
-      ticking = true;
-      requestAnimationFrame(update);
-    }
-  }
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll);
-  update();
 })();
