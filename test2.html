@@ -3,343 +3,313 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>ERP & Inventory — Landing</title>
+  <title>InventTech — ERP & Inventory</title>
 
-  <!-- Optional: nicer font (safe to remove) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <!-- Top thin bar -->
-  <div class="topbar" aria-hidden="true"></div>
+<body class="is-loading">
 
-  <!-- Header -->
-  <header class="header">
-    <div class="container header__inner">
-      <a class="brand" href="#home" aria-label="Homepage">
-        <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__name">AcmeERP</span>
-      </a>
-
-      <button class="navToggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
-      <nav class="nav" id="nav">
-        <a href="#home">Home</a>
-        <a href="#features">Features</a>
-        <a href="#solutions">Solutions</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#about">About Us</a>
-        <a href="#contact">Contact</a>
-
-        <div class="nav__cta">
-          <a class="btn btn--ghost" href="#contact">Request Demo</a>
-          <a class="btn btn--primary" href="#pricing">Start Free Trial</a>
-        </div>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero -->
-  <main id="home" class="hero">
-    <div class="container hero__grid">
-      <div class="hero__copy">
-        <div class="pill">
-          <span class="pill__dot"></span>
-          Trusted by 500+ Businesses
-        </div>
-
-        <h1 class="hero__title">
-          All-in-One ERP &<br />
-          Inventory Management<br />
-          Software<br />
-          <span class="hero__titleAccent">for Every Business</span>
-        </h1>
-
-        <p class="hero__subtitle">
-          Manage Inventory, Sales, CRM, Accounts & Analytics in One
-          Powerful Dashboard. Streamline operations and grow faster with
-          intelligent automation.
-        </p>
-
-        <div class="hero__actions">
-          <a class="btn btn--primary btn--lg" href="#contact">Request Demo</a>
-          <a class="btn btn--outline btn--lg" href="#pricing">Start Free Trial</a>
-        </div>
-
-        <ul class="hero__checks">
-          <li>
-            <span class="check" aria-hidden="true">✓</span>
-            No credit card required
-          </li>
-          <li>
-            <span class="check" aria-hidden="true">✓</span>
-            14-day free trial
-          </li>
-          <li>
-            <span class="check" aria-hidden="true">✓</span>
-            Cancel anytime
-          </li>
-        </ul>
-      </div>
-
-      <div class="hero__media">
-        <div class="mock">
-          <!-- Inline SVG "tablet screenshot" placeholder (replace with your image if you want) -->
-          <svg class="mock__svg" viewBox="0 0 980 620" role="img" aria-label="Product dashboard preview">
-            <defs>
-              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="var(--blue)"/>
-                <stop offset="55%" stop-color="var(--pink)"/>
-                <stop offset="100%" stop-color="var(--orange)"/>
-              </linearGradient>
-              <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#ffffff"/>
-                <stop offset="100%" stop-color="#f3f5ff"/>
-              </linearGradient>
-              <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-                <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0b102a" flood-opacity=".16"/>
-              </filter>
-            </defs>
-
-            <!-- device -->
-            <g filter="url(#shadow)">
-              <rect x="90" y="60" width="800" height="500" rx="28" fill="#0d122e"/>
-              <rect x="120" y="95" width="740" height="430" rx="18" fill="url(#g2)"/>
-              <rect x="120" y="95" width="740" height="56" rx="18" fill="#eef0ff"/>
-              <circle cx="152" cy="123" r="7" fill="#ff5a7a"/>
-              <circle cx="176" cy="123" r="7" fill="#ffb25c"/>
-              <circle cx="200" cy="123" r="7" fill="#5aa7ff"/>
-
-              <!-- UI blocks -->
-              <rect x="148" y="178" width="220" height="120" rx="14" fill="#ffffff" stroke="#e7e9ff"/>
-              <rect x="390" y="178" width="440" height="120" rx="14" fill="#ffffff" stroke="#e7e9ff"/>
-              <rect x="148" y="316" width="332" height="184" rx="14" fill="#ffffff" stroke="#e7e9ff"/>
-              <rect x="498" y="316" width="332" height="184" rx="14" fill="#ffffff" stroke="#e7e9ff"/>
-
-              <!-- charts -->
-              <path d="M420 266 C490 210, 560 290, 640 230 C690 195, 760 240, 810 210" fill="none" stroke="url(#g1)" stroke-width="7" stroke-linecap="round"/>
-              <path d="M180 458 L220 418 L260 438 L300 390 L340 410 L380 372 L430 396" fill="none" stroke="#5aa7ff" stroke-width="7" stroke-linecap="round"/>
-              <g>
-                <rect x="530" y="368" width="18" height="110" rx="9" fill="#5aa7ff"/>
-                <rect x="560" y="400" width="18" height="78" rx="9" fill="#ff5a7a"/>
-                <rect x="590" y="384" width="18" height="94" rx="9" fill="#ffb25c"/>
-                <rect x="620" y="424" width="18" height="54" rx="9" fill="#5aa7ff"/>
-                <rect x="650" y="392" width="18" height="86" rx="9" fill="#ff5a7a"/>
-              </g>
-            </g>
-          </svg>
-
-          <div class="floatingBadge">
-            <div class="floatingBadge__top">
-              <span class="dot"></span>
-              <span>+24%</span>
-            </div>
-            <div class="floatingBadge__bar">
-              <span></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Stats row -->
-    <section class="stats">
-      <div class="container stats__grid">
-        <div class="stat">
-          <div class="stat__value" data-count="500" data-suffix="+">0</div>
-          <div class="stat__label">Businesses Trust Us</div>
-        </div>
-        <div class="stat">
-          <div class="stat__value" data-count="99.9" data-suffix="%">0</div>
-          <div class="stat__label">Uptime Guaranteed</div>
-        </div>
-        <div class="stat">
-          <div class="stat__value" data-count="24" data-suffix="/7">0</div>
-          <div class="stat__label">Real-time Analytics</div>
-        </div>
-        <div class="stat">
-          <div class="stat__value" data-count="50" data-suffix="+">0</div>
-          <div class="stat__label">Countries Worldwide</div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Features -->
-  <section id="features" class="section">
-    <div class="container">
-      <div class="sectionHead">
-        <div class="sectionKicker">Features</div>
-        <h2 class="sectionTitle">Everything You Need to Manage Your Business</h2>
-        <p class="sectionSub">
-          Powerful features designed to streamline operations, increase efficiency,
-          and drive growth.
-        </p>
-      </div>
-
-      <div class="cards">
-        <article class="card">
-          <div class="card__media media--a" aria-hidden="true"></div>
-          <div class="card__body">
-            <h3>Smart Inventory Tracking</h3>
-            <p>
-              Track stock in real-time, set reorder levels, and manage
-              warehouses with automation.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card__media media--b" aria-hidden="true"></div>
-          <div class="card__body">
-            <h3>Multi-Warehouse Management</h3>
-            <p>
-              Manage inventory across locations with transfers, bin
-              locations, and role-based access.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card__media media--c" aria-hidden="true"></div>
-          <div class="card__body">
-            <h3>Real-time Dashboard & Reports</h3>
-            <p>
-              Visualize sales, purchases, and financial trends using
-              beautiful dashboards and exports.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card__media media--d" aria-hidden="true"></div>
-          <div class="card__body">
-            <h3>Sales & Purchase Management</h3>
-            <p>
-              Create quotes, invoices, purchase orders, and manage taxes
-              with integrated workflows.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card__media media--e" aria-hidden="true"></div>
-          <div class="card__body">
-            <h3>CRM & Customer Tracking</h3>
-            <p>
-              Build customer profiles, log interactions, and improve retention
-              with smart follow-ups.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card__media media--f" aria-hidden="true"></div>
-          <div class="card__body">
-            <h3>Barcode & Billing Integration</h3>
-            <p>
-              Scan barcodes, speed up billing, and integrate with printers and
-              POS workflows.
-            </p>
-          </div>
-        </article>
-      </div>
-
-      <div class="sectionCta">
-        <a class="btn btn--outline" href="#features">View All Features →</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Industries -->
-  <section class="section section--alt" id="solutions">
-    <div class="container">
-      <div class="sectionHead">
-        <div class="sectionKicker">Industries</div>
-        <h2 class="sectionTitle">Built for Multiple Industries</h2>
-        <p class="sectionSub">Specialized ERP solutions tailored to your industry needs.</p>
-      </div>
-
-      <div class="industries">
-        <button class="industry" type="button">
-          <span class="industry__icon i--pink" aria-hidden="true">👕</span>
-          <span class="industry__label">Textile & Garments</span>
-        </button>
-        <button class="industry" type="button">
-          <span class="industry__icon i--blue" aria-hidden="true">🛒</span>
-          <span class="industry__label">Retail & Supermarkets</span>
-        </button>
-        <button class="industry" type="button">
-          <span class="industry__icon i--orange" aria-hidden="true">📦</span>
-          <span class="industry__label">Warehousing & Distribution</span>
-        </button>
-        <button class="industry" type="button">
-          <span class="industry__icon i--blue" aria-hidden="true">🏭</span>
-          <span class="industry__label">Manufacturing</span>
-        </button>
-        <button class="industry" type="button">
-          <span class="industry__icon i--pink" aria-hidden="true">🧾</span>
-          <span class="industry__label">Wholesale & Trading</span>
-        </button>
-        <button class="industry" type="button">
-          <span class="industry__icon i--orange" aria-hidden="true">🍽️</span>
-          <span class="industry__label">Restaurants & Food</span>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Simple footer -->
-  <footer class="footer" id="contact">
-    <div class="container footer__grid">
-      <div>
-        <div class="footer__brand">
-          <span class="brand__mark" aria-hidden="true"></span>
-          <strong>AcmeERP</strong>
-        </div>
-        <p class="footer__muted">
-          Modern ERP & inventory tools to streamline operations and grow faster.
-        </p>
-      </div>
-
-      <div class="footer__links">
-        <a href="#features">Features</a>
-        <a href="#solutions">Industries</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#about">About</a>
-      </div>
-
-      <div class="footer__cta">
-        <a class="btn btn--primary" href="#pricing">Start Free Trial</a>
-        <a class="btn btn--ghost" href="#home">Back to Top</a>
-      </div>
-    </div>
-
-    <div class="container footer__bottom">
-      <span>© <span id="year"></span> AcmeERP. All rights reserved.</span>
-      <span class="footer__muted">Privacy • Terms</span>
-    </div>
-  </footer>
-
-  <!-- Cookie banner (like the screenshot bottom bar) -->
-  <div class="cookie" id="cookie">
-    <div class="cookie__inner">
-      <div class="cookie__text">
-        <strong>We use cookies</strong>
-        <span>to improve your experience and analyze traffic.</span>
-      </div>
-      <div class="cookie__actions">
-        <button class="btn btn--ghost" id="cookieDecline" type="button">Decline</button>
-        <button class="btn btn--primary" id="cookieAccept" type="button">Accept</button>
-      </div>
+  <!-- LOADER (2s) -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <div class="loader__brand">InventTech</div>
+      <div class="loader__line"></div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Page wrapper (we fade this in after loader) -->
+  <div id="page" class="page">
+
+    <div class="topbar" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header class="header reveal" data-reveal="down" data-delay="0.10">
+      <div class="container header__inner">
+        <a class="brand" href="#home" aria-label="Homepage">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span class="brand__name">InventTech</span>
+        </a>
+
+        <button class="navToggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+
+        <nav class="nav" id="nav">
+          <a class="nav__link" href="#home">Home</a>
+          <a class="nav__link" href="#features">Features</a>
+          <a class="nav__link" href="#solutions">Solutions</a>
+          <a class="nav__link" href="#pricing">Pricing</a>
+          <a class="nav__link" href="#about">About Us</a>
+          <a class="nav__link" href="#contact">Contact</a>
+
+          <div class="nav__cta">
+            <a class="btn btn--ghost" href="#contact">Request Demo</a>
+            <a class="btn btn--primary" href="#pricing">Start Free Trial</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <main id="home" class="hero">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+
+          <div class="pill reveal" data-reveal="up" data-delay="0.20">
+            <span class="pill__dot"></span>
+            Trusted by 500+ Businesses
+          </div>
+
+          <h1 class="hero__title reveal" data-reveal="up" data-delay="0.30">
+            All-in-One ERP &<br />
+            Inventory Management<br />
+            Software<br />
+            <span class="hero__titleAccent">for Every Business</span>
+          </h1>
+
+          <p class="hero__subtitle reveal" data-reveal="up" data-delay="0.40">
+            Manage Inventory, Sales, CRM, Accounts & Analytics in One
+            Powerful Dashboard. Streamline operations and grow faster with
+            intelligent automation.
+          </p>
+
+          <div class="hero__actions reveal" data-reveal="up" data-delay="0.50">
+            <a class="btn btn--primary btn--lg" href="#contact">Request Demo</a>
+            <a class="btn btn--outline btn--lg" href="#pricing">Start Free Trial</a>
+          </div>
+
+          <ul class="hero__checks reveal" data-reveal="up" data-delay="0.60">
+            <li><span class="check" aria-hidden="true">✓</span>No credit card required</li>
+            <li><span class="check" aria-hidden="true">✓</span>14-day free trial</li>
+            <li><span class="check" aria-hidden="true">✓</span>Cancel anytime</li>
+          </ul>
+        </div>
+
+        <div class="hero__media reveal" data-reveal="up" data-delay="0.35">
+          <div class="mock">
+            <!-- Placeholder dashboard SVG (replace later if you want) -->
+            <svg class="mock__svg" viewBox="0 0 980 620" role="img" aria-label="Product dashboard preview">
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="var(--brand-blue)"/>
+                  <stop offset="55%" stop-color="var(--brand-pink)"/>
+                  <stop offset="100%" stop-color="var(--brand-orange)"/>
+                </linearGradient>
+                <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ffffff"/>
+                  <stop offset="100%" stop-color="#f3f5ff"/>
+                </linearGradient>
+                <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#0b102a" flood-opacity=".16"/>
+                </filter>
+              </defs>
+
+              <g filter="url(#shadow)">
+                <rect x="90" y="60" width="800" height="500" rx="28" fill="#0d122e"/>
+                <rect x="120" y="95" width="740" height="430" rx="18" fill="url(#g2)"/>
+                <rect x="120" y="95" width="740" height="56" rx="18" fill="#eef0ff"/>
+                <circle cx="152" cy="123" r="7" fill="#ff5a7a"/>
+                <circle cx="176" cy="123" r="7" fill="#ffb25c"/>
+                <circle cx="200" cy="123" r="7" fill="#5aa7ff"/>
+
+                <rect x="148" y="178" width="220" height="120" rx="14" fill="#ffffff" stroke="#e7e9ff"/>
+                <rect x="390" y="178" width="440" height="120" rx="14" fill="#ffffff" stroke="#e7e9ff"/>
+                <rect x="148" y="316" width="332" height="184" rx="14" fill="#ffffff" stroke="#e7e9ff"/>
+                <rect x="498" y="316" width="332" height="184" rx="14" fill="#ffffff" stroke="#e7e9ff"/>
+
+                <path d="M420 266 C490 210, 560 290, 640 230 C690 195, 760 240, 810 210"
+                      fill="none" stroke="url(#g1)" stroke-width="7" stroke-linecap="round"/>
+                <path d="M180 458 L220 418 L260 438 L300 390 L340 410 L380 372 L430 396"
+                      fill="none" stroke="#5aa7ff" stroke-width="7" stroke-linecap="round"/>
+                <g>
+                  <rect x="530" y="368" width="18" height="110" rx="9" fill="#5aa7ff"/>
+                  <rect x="560" y="400" width="18" height="78" rx="9" fill="#ff5a7a"/>
+                  <rect x="590" y="384" width="18" height="94" rx="9" fill="#ffb25c"/>
+                  <rect x="620" y="424" width="18" height="54" rx="9" fill="#5aa7ff"/>
+                  <rect x="650" y="392" width="18" height="86" rx="9" fill="#ff5a7a"/>
+                </g>
+              </g>
+            </svg>
+
+            <div class="floatingBadge">
+              <div class="floatingBadge__top">
+                <span class="dot"></span>
+                <span>+24%</span>
+              </div>
+              <div class="floatingBadge__bar"><span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section class="statsStage" id="statsStage" aria-label="Company stats">
+  <div class="statsPin" id="statsPin">
+    <div class="container stats__grid">
+      <div class="stat stat--seq">
+        <div class="stat__value" data-count="500" data-suffix="+">0</div>
+        <div class="stat__label">Businesses Trust Us</div>
+      </div>
+
+      <div class="stat stat--seq">
+        <div class="stat__value" data-count="99.9" data-suffix="%">0</div>
+        <div class="stat__label">Uptime Guaranteed</div>
+      </div>
+
+      <div class="stat stat--seq">
+        <div class="stat__value" data-count="24" data-suffix="/7">0</div>
+        <div class="stat__label">Real-time Analytics</div>
+      </div>
+
+      <div class="stat stat--seq">
+        <div class="stat__value" data-count="50" data-suffix="+">0</div>
+        <div class="stat__label">Countries Worldwide</div>
+      </div>
+    </div>
+
+    <!-- optional small hint -->
+    <div class="statsHint" id="statsHint">Scroll to reveal →</div>
+  </div>
+</section>
+    </main>
+
+    <!-- Features -->
+    <section id="features" class="section">
+      <div class="container">
+        <div class="sectionHead reveal" data-reveal="up">
+          <div class="sectionKicker">Features</div>
+          <h2 class="sectionTitle">Everything You Need to Manage Your Business</h2>
+          <p class="sectionSub">
+            Powerful features designed to streamline operations, increase efficiency,
+            and drive growth.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card reveal" data-reveal="up" data-delay="0.00">
+            <div class="card__media media--a" aria-hidden="true"></div>
+            <div class="card__body">
+              <h3>Smart Inventory Tracking</h3>
+              <p>Track stock in real-time, set reorder levels, and manage warehouses with automation.</p>
+            </div>
+          </article>
+
+          <article class="card reveal" data-reveal="up" data-delay="0.05">
+            <div class="card__media media--b" aria-hidden="true"></div>
+            <div class="card__body">
+              <h3>Multi-Warehouse Management</h3>
+              <p>Manage inventory across locations with transfers, bin locations, and role-based access.</p>
+            </div>
+          </article>
+
+          <article class="card reveal" data-reveal="up" data-delay="0.10">
+            <div class="card__media media--c" aria-hidden="true"></div>
+            <div class="card__body">
+              <h3>Real-time Dashboard & Reports</h3>
+              <p>Visualize sales, purchases, and financial trends using beautiful dashboards and exports.</p>
+            </div>
+          </article>
+
+          <article class="card reveal" data-reveal="up" data-delay="0.00">
+            <div class="card__media media--d" aria-hidden="true"></div>
+            <div class="card__body">
+              <h3>Sales & Purchase Management</h3>
+              <p>Create quotes, invoices, purchase orders, and manage taxes with integrated workflows.</p>
+            </div>
+          </article>
+
+          <article class="card reveal" data-reveal="up" data-delay="0.05">
+            <div class="card__media media--e" aria-hidden="true"></div>
+            <div class="card__body">
+              <h3>CRM & Customer Tracking</h3>
+              <p>Build customer profiles, log interactions, and improve retention with smart follow-ups.</p>
+            </div>
+          </article>
+
+          <article class="card reveal" data-reveal="up" data-delay="0.10">
+            <div class="card__media media--f" aria-hidden="true"></div>
+            <div class="card__body">
+              <h3>Barcode & Billing Integration</h3>
+              <p>Scan barcodes, speed up billing, and integrate with printers and POS workflows.</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="sectionCta reveal" data-reveal="up">
+          <a class="btn btn--outline" href="#features">View All Features →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Industries -->
+    <section class="section section--alt" id="solutions">
+      <div class="container">
+        <div class="sectionHead reveal" data-reveal="up">
+          <div class="sectionKicker">Industries</div>
+          <h2 class="sectionTitle">Built for Multiple Industries</h2>
+          <p class="sectionSub">Specialized ERP solutions tailored to your industry needs.</p>
+        </div>
+
+        <div class="industries">
+          <button class="industry reveal" data-reveal="up" type="button"><span class="industry__icon i--pink">👕</span><span class="industry__label">Textile & Garments</span></button>
+          <button class="industry reveal" data-reveal="up" data-delay="0.05" type="button"><span class="industry__icon i--blue">🛒</span><span class="industry__label">Retail & Supermarkets</span></button>
+          <button class="industry reveal" data-reveal="up" data-delay="0.10" type="button"><span class="industry__icon i--orange">📦</span><span class="industry__label">Warehousing & Distribution</span></button>
+          <button class="industry reveal" data-reveal="up" type="button"><span class="industry__icon i--blue">🏭</span><span class="industry__label">Manufacturing</span></button>
+          <button class="industry reveal" data-reveal="up" data-delay="0.05" type="button"><span class="industry__icon i--pink">🧾</span><span class="industry__label">Wholesale & Trading</span></button>
+          <button class="industry reveal" data-reveal="up" data-delay="0.10" type="button"><span class="industry__icon i--orange">🍽️</span><span class="industry__label">Restaurants & Food</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" id="contact">
+      <div class="container footer__grid">
+        <div class="reveal" data-reveal="up">
+          <div class="footer__brand">
+            <span class="brand__mark" aria-hidden="true"></span>
+            <strong>InventTech</strong>
+          </div>
+          <p class="footer__muted">Modern ERP & inventory tools to streamline operations and grow faster.</p>
+        </div>
+
+        <div class="footer__links reveal" data-reveal="up" data-delay="0.05">
+          <a href="#features">Features</a>
+          <a href="#solutions">Industries</a>
+          <a href="#pricing" id="pricing">Pricing</a>
+          <a href="#about" id="about">About</a>
+        </div>
+
+        <div class="footer__cta reveal" data-reveal="up" data-delay="0.10">
+          <a class="btn btn--primary" href="#pricing">Start Free Trial</a>
+          <a class="btn btn--ghost" href="#home">Back to Top</a>
+        </div>
+      </div>
+
+      <div class="container footer__bottom">
+        <span>© <span id="year"></span> InventTech. All rights reserved.</span>
+        <span class="footer__muted">Privacy • Terms</span>
+      </div>
+    </footer>
+
+    <!-- Cookie banner -->
+    <div class="cookie" id="cookie">
+      <div class="cookie__inner">
+        <div class="cookie__text">
+          <strong>We use cookies</strong>
+          <span>to improve your experience and analyze traffic.</span>
+        </div>
+        <div class="cookie__actions">
+          <button class="btn btn--ghost" id="cookieDecline" type="button">Decline</button>
+          <button class="btn btn--primary" id="cookieAccept" type="button">Accept</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+  <script src="scriptt.js"></script>
 </body>
 </html>
