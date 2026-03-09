@@ -1,42 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>InventTech. — ERP & Inventory Management</title>
+  <meta name="description"
+    content="InventTech helps businesses manage inventory, sales, CRM, accounts, approvals, and analytics in one powerful platform." />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body class="preload">
-  <!-- Ambient background -->
+  <div class="intro-loader" id="introLoader" aria-hidden="true">
+  <div class="intro-loader__inner">
+    <div class="intro-loader__glow"></div>
+    <div class="intro-loader__brand">
+      <span class="intro-loader__word">InventTech</span><span class="dot">.</span>
+    </div>
+  </div>
+</div>
+  <div class="progress" aria-hidden="true">
+    <span class="progress__bar" id="progressBar"></span>
+  </div>
+
   <div class="bg" aria-hidden="true">
     <span class="blob b1"></span>
     <span class="blob b2"></span>
     <span class="blob b3"></span>
     <span class="ring r1"></span>
     <span class="ring r2"></span>
-    <span class="spark s1"></span>
-    <span class="spark s2"></span>
-    <span class="spark s3"></span>
     <div class="grid"></div>
     <div class="noise"></div>
   </div>
 
-  <!-- HEADER -->
   <header class="header">
     <div class="container header__inner">
-      <a class="brand" href="#top" aria-label="InventTech Home">
-        <img class="brand__logo" src="logo.png" alt="InventTech logo" />
+      <a class="brand magnetic" href="#top" aria-label="InventTech Home">
         <span class="brand__text">InventTech<span class="dot">.</span></span>
       </a>
 
       <nav class="nav" aria-label="Primary navigation">
-        <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false">
+        <button class="nav__toggle magnetic" id="navToggle" aria-label="Open menu" aria-expanded="false"
+          aria-controls="navPanel" type="button">
           <span></span><span></span><span></span>
         </button>
 
@@ -47,313 +58,621 @@
             <li><a class="nav__link" href="#industries">Industries</a></li>
             <li><a class="nav__link" href="#pricing">Pricing</a></li>
             <li><a class="nav__link" href="#about">About</a></li>
+            <li><a class="nav__link" href="#faqs">FAQs</a></li>
             <li><a class="nav__link" href="#contact">Contact</a></li>
           </ul>
 
           <div class="nav__cta">
-            <a class="btn btn--ghost ripple" href="#contact">Request Demo</a>
-            <a class="btn btn--primary ripple" href="#pricing">Start Free Trial</a>
+            <a class="btn btn--ghost magnetic ripple" href="#contact">
+              <span>Request Demo</span>
+            </a>
+
+            <a class="btn btn--primary magnetic ripple" href="#pricing">
+              <span class="btn__shine"></span>
+              <span>Start Free Trial</span>
+            </a>
           </div>
         </div>
       </nav>
     </div>
   </header>
 
-  <!-- HERO -->
   <main id="top" class="main">
     <section class="hero container">
       <div class="hero__left">
-        <div class="badge reveal" style="--d:0">
+        <div class="badge reveal spotlight" style="--d:0">
           <span class="badge__dot"></span>
-          Trusted by <b>500+</b> businesses
+          Trusted by
+          <b><span class="count" data-count="500" data-suffix="+">0</span></b>
+          businesses
         </div>
 
         <h1 class="hero__title reveal" style="--d:1">
-          All-in-One ERP & Inventory<br>
-          Management Software<br>
-          <span class="grad">for Every Business</span>
+          Your Inventory<br />
+          <span class="grad">Our Management</span>
         </h1>
 
         <p class="hero__sub reveal" style="--d:2">
           Manage Inventory, Sales, CRM, Accounts & Analytics in one powerful dashboard.
-          Streamline operations, reduce manual work, and grow faster with clean data + approvals.
+          Streamline operations, reduce manual work, and grow faster with clean data,
+          approvals, and real-time visibility.
         </p>
 
         <div class="hero__actions reveal" style="--d:3">
-          <a class="btn btn--primary btn--lg ripple" href="#contact">
-            Request Demo <span class="btn__icon">→</span>
+          <a class="btn btn--primary btn--lg magnetic ripple" href="#contact">
+            <span class="btn__shine"></span>
+            <span>Request Demo</span>
+            <span class="btn__icon">→</span>
           </a>
-          <a class="btn btn--soft btn--lg ripple" href="#pricing">Start Free Trial</a>
+
+          <a class="btn btn--soft btn--lg magnetic ripple" href="#pricing">
+            <span>Start Free Trial</span>
+          </a>
         </div>
 
         <div class="mini-stats reveal" style="--d:4">
-          <div class="mini">
-            <div class="mini__k">Setup</div>
-            <div class="mini__v">in minutes</div>
+          <div class="mini spotlight">
+            <div class="mini__icon" aria-hidden="true">✓</div>
+            <div class="mini__text">
+              <div class="mini__v">14-day free trial</div>
+            </div>
           </div>
-          <div class="mini">
-            <div class="mini__k">Security</div>
-            <div class="mini__v">role-based</div>
+
+          <div class="mini spotlight">
+            <div class="mini__icon" aria-hidden="true">✓</div>
+            <div class="mini__text">
+              <div class="mini__v">No credit card required</div>
+            </div>
           </div>
-          <div class="mini">
-            <div class="mini__k">Support</div>
-            <div class="mini__v">24/7</div>
+
+          <div class="mini spotlight">
+            <div class="mini__icon" aria-hidden="true">✓</div>
+            <div class="mini__text">
+              <div class="mini__v">Cancel anytime</div>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="hero__right">
-        <div class="device reveal" style="--d:2" id="device">
+        <div class="device reveal spotlight tilt" style="--d:2" id="device">
           <div class="device__shine" aria-hidden="true"></div>
-          <div class="device__frame" aria-hidden="true"></div>
-
-          <!-- Replace this with your real dashboard screenshot if you have one -->
-          <img
-            class="device__img"
+          <img class="device__img"
             src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop"
-            alt="Dashboard preview"
-            loading="lazy"
-          />
+            alt="Dashboard preview" loading="lazy" />
+        </div>
+      </div>
+    </section>
 
-          <div class="float f1">
-            <div class="float__top">
-              <span class="tag tag--pink">Revenue</span>
-              <span class="muted">This month</span>
-            </div>
-            <div class="float__value">+24%</div>
-            <div class="bar"><span></span></div>
-          </div>
+    <section class="strip" id="statsStrip">
+      <div class="container strip__inner spotlight">
+        <div class="strip__item strip__card">
+          <div class="strip__k">500+</div>
+          <div class="strip__v">Businesses trust us</div>
+        </div>
 
-          <div class="float f2">
-            <div class="float__top">
-              <span class="tag tag--blue">Inventory</span>
-              <span class="muted">Accuracy</span>
-            </div>
-            <div class="float__value">99.2%</div>
-            <div class="pips" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-          </div>
+        <div class="strip__item strip__card">
+          <div class="strip__k">99.9%</div>
+          <div class="strip__v">Uptime guaranteed</div>
+        </div>
 
-          <div class="float f3">
-            <div class="float__top">
-              <span class="tag tag--orange">Approvals</span>
-              <span class="muted">POs</span>
-            </div>
-            <div class="float__value">Fast</div>
-            <div class="chips" aria-hidden="true">
-              <span class="chip">Pending</span>
-              <span class="chip ok">Approved</span>
+        <div class="strip__item strip__card">
+          <div class="strip__k">24/7</div>
+          <div class="strip__v">Real-time analytics</div>
+        </div>
+
+        <div class="strip__item strip__card">
+          <div class="strip__k">50+</div>
+          <div class="strip__v">Countries worldwide</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="feature-showcase" id="features">
+      <div class="container">
+        <div class="feature-showcase__intro">
+          <p class="kicker">Features</p>
+          <h2>Everything you need to run operations smoothly</h2>
+          <p class="sub">Designed to reduce follow-ups, manual work, and data mess.</p>
+        </div>
+      </div>
+
+      <div class="feature-showcase__scroll" id="featureScrollArea">
+        <div class="feature-showcase__pin">
+          <div class="container">
+            <div class="feature-showcase__frame">
+              <aside class="feature-showcase__side">
+                <div class="feature-count">
+                  <span id="featureCurrent">01</span>
+                  <span class="feature-count__line"></span>
+                  <span>06</span>
+                </div>
+              </aside>
+
+              <div class="feature-panel spotlight">
+                <div class="feature-panel__copy">
+                  <div class="feature-panel__meta">
+                    <span class="feature-panel__num" id="featureNum">01</span>
+                    <span class="feature-panel__label" id="featureLabel">Inventory</span>
+                  </div>
+
+                  <h3 id="featureTitle">Smart Inventory Tracking</h3>
+                  <p id="featureDesc">
+                    Track stock levels in real time across locations with alerts,
+                    reorder points, and movement visibility.
+                  </p>
+                </div>
+
+                <div class="feature-panel__media" id="featureMedia">
+                  <span class="feature-panel__glitch"></span>
+                  <img id="featureImage"
+                    src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop"
+                    alt="Inventory preview" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- FEATURE STRIP -->
-    <section class="strip">
-      <div class="container strip__inner reveal" style="--d:0">
-        <div class="strip__item">
-          <div class="strip__k">Masters</div>
-          <div class="strip__v">Parties • Vendors • Jobbers</div>
-        </div>
-        <div class="strip__item">
-          <div class="strip__k">Materials</div>
-          <div class="strip__v">Yarn • Greige • Trim • Finished</div>
-        </div>
-        <div class="strip__item">
-          <div class="strip__k">Workflow</div>
-          <div class="strip__v">POs • Approval status • Tracking</div>
-        </div>
-        <div class="strip__item">
-          <div class="strip__k">Visibility</div>
-          <div class="strip__v">Analytics • Audit • Clean data</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section class="section container" id="features">
-      <div class="section__head reveal" style="--d:0">
-        <p class="kicker">Features</p>
-        <h2>Everything you need to run operations smoothly</h2>
-        <p class="sub">Designed to reduce follow-ups, manual work, and data mess.</p>
-      </div>
-
-      <div class="cards">
-        <article class="card tilt reveal" style="--d:0">
-          <div class="icon i1" aria-hidden="true">⌁</div>
-          <h3>Centralized Masters</h3>
-          <p>Maintain parties/vendors, jobbers, firms, locations, and material catalogs in one place.</p>
-        </article>
-
-        <article class="card tilt reveal" style="--d:1">
-          <div class="icon i2" aria-hidden="true">◎</div>
-          <h3>Inventory Tracking</h3>
-          <p>Real-time visibility for stock, movement, and shortages across materials and shades.</p>
-        </article>
-
-        <article class="card tilt reveal" style="--d:2">
-          <div class="icon i3" aria-hidden="true">⟡</div>
-          <h3>POs with Approvals</h3>
-          <p>Generate purchase orders, track approval status, and keep workflows accountable.</p>
-        </article>
-
-        <article class="card tilt reveal" style="--d:3">
-          <div class="icon i4" aria-hidden="true">⎈</div>
-          <h3>Analytics Dashboard</h3>
-          <p>Actionable insights on purchasing, inventory health, and process efficiency.</p>
-        </article>
-
-        <article class="card tilt reveal" style="--d:4">
-          <div class="icon i5" aria-hidden="true">◈</div>
-          <h3>Role-Based Access</h3>
-          <p>Secure controls for teams with permissions, audit trails, and clear accountability.</p>
-        </article>
-
-        <article class="card tilt reveal" style="--d:5">
-          <div class="icon i6" aria-hidden="true">↯</div>
-          <h3>Faster Operations</h3>
-          <p>Automate repetitive tasks, reduce errors, and streamline daily coordination.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- INDUSTRIES -->
     <section class="section container" id="industries">
-      <div class="section__head reveal" style="--d:0">
-        <p class="kicker">Solutions</p>
-        <h2>Built for multiple industries</h2>
-        <p class="sub">Specialized workflows tailored to your business needs.</p>
-      </div>
+      <div class="industries-showcase spotlight">
+        <div class="industries-showcase__inner">
+          <div class="industries-showcase__top">
+            <div>
+              <p class="kicker">Solutions</p>
+              <h2>Built for multiple industries</h2>
+              <p class="sub">Specialized workflows tailored to your business needs.</p>
+            </div>
 
-      <div class="tiles">
-        <div class="tile reveal" style="--d:0">
-          <div class="tile__icon t1">⬣</div>
-          <div class="tile__text">Textile & Garments</div>
-        </div>
-        <div class="tile reveal" style="--d:1">
-          <div class="tile__icon t2">◳</div>
-          <div class="tile__text">Retail & Supermarkets</div>
-        </div>
-        <div class="tile reveal" style="--d:2">
-          <div class="tile__icon t3">▦</div>
-          <div class="tile__text">Warehousing & Distribution</div>
-        </div>
-        <div class="tile reveal" style="--d:3">
-          <div class="tile__icon t4">▤</div>
-          <div class="tile__text">Manufacturing</div>
-        </div>
-        <div class="tile reveal" style="--d:4">
-          <div class="tile__icon t5">◍</div>
-          <div class="tile__text">CRM & Sales Management</div>
-        </div>
-        <div class="tile reveal" style="--d:5">
-          <div class="tile__icon t6">◎</div>
-          <div class="tile__text">Multi-branch Businesses</div>
-        </div>
-      </div>
+            <div class="industries-showcase__badge">
+              <span class="industries-showcase__badgeDot"></span>
+              Flexible industry workflows
+            </div>
+          </div>
 
-      <div class="center reveal" style="--d:6">
-        <a class="btn btn--dark ripple" href="#contact">Explore Industry Solutions <span class="btn__icon">→</span></a>
+          <div class="industries-layout" id="industriesFall">
+            <article class="industry-card industry-card--wide industry-fall spotlight">
+              <div class="industry-card__icon">⬣</div>
+              <div class="industry-card__content">
+                <h3>Textile & Garments</h3>
+                <p>Track raw materials, greige, shades, finishing, job work, and dispatches with cleaner operational
+                  visibility.</p>
+              </div>
+            </article>
+
+            <article class="industry-card industry-fall spotlight">
+              <div class="industry-card__icon">◳</div>
+              <div class="industry-card__content">
+                <h3>Retail & Supermarkets</h3>
+                <p>Handle billing, item masters, stock movement, and branch-level performance from one dashboard.</p>
+              </div>
+            </article>
+
+            <article class="industry-card industry-fall spotlight">
+              <div class="industry-card__icon">▦</div>
+              <div class="industry-card__content">
+                <h3>Warehousing & Distribution</h3>
+                <p>Monitor inventory movement, dispatches, inward tracking, and transfer workflows with speed.</p>
+              </div>
+            </article>
+
+            <article class="industry-card industry-fall spotlight">
+              <div class="industry-card__icon">▤</div>
+              <div class="industry-card__content">
+                <h3>Manufacturing</h3>
+                <p>Connect production, materials, approvals, and process checkpoints inside one operational system.</p>
+              </div>
+            </article>
+
+            <article class="industry-card industry-fall spotlight">
+              <div class="industry-card__icon">◍</div>
+              <div class="industry-card__content">
+                <h3>CRM & Sales Management</h3>
+                <p>Manage leads, customer history, sales tracking, and follow-ups with better visibility and control.
+                </p>
+              </div>
+            </article>
+
+            <article class="industry-card industry-card--wide industry-fall spotlight">
+              <div class="industry-card__icon">◎</div>
+              <div class="industry-card__content">
+                <h3>Multi-branch Businesses</h3>
+                <p>Get centralized control across locations with live data, cleaner reporting, and role-based
+                  operations.</p>
+              </div>
+            </article>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- PRICING -->
     <section class="section container" id="pricing">
       <div class="section__head reveal" style="--d:0">
         <p class="kicker">Pricing</p>
-        <h2>Start small. Scale smoothly.</h2>
-        <p class="sub">Simple plans with powerful workflows.</p>
+        <h2>Simple plans. Powerful workflows.</h2>
+        <p class="sub">Switch billing anytime. Yearly gives a discount.</p>
       </div>
 
-      <div class="pricing">
-        <article class="price reveal" style="--d:0">
-          <div class="price__top">
-            <h3>Starter</h3>
+      <div class="pricing-toggle-wrap reveal" style="--d:1">
+        <div class="pricing-toggle spotlight">
+          <span class="pricing-toggle__label">Monthly</span>
+          <button class="switch magnetic" id="billingSwitch" role="switch" aria-checked="false"
+            aria-label="Toggle yearly billing" type="button">
+            <span class="switch__thumb"></span>
+          </button>
+          <span class="pricing-toggle__label">Yearly <em class="save">Save 20%</em></span>
+        </div>
+      </div>
+
+      <div class="pricing-modern">
+        <article class="plan plan--starter spotlight">
+          <div class="plan__top">
+            <div>
+              <p class="plan__tagline">Best for getting started</p>
+              <h3>Starter</h3>
+            </div>
             <span class="pill pill--blue">Teams</span>
           </div>
-          <div class="money">$19 <span>/mo</span></div>
-          <ul>
+
+          <div class="plan__price">
+            <span class="plan__currency">$</span>
+            <span class="priceAmount" data-monthly="19" data-yearly="182">19</span>
+            <span class="per">/mo</span>
+          </div>
+
+          <p class="plan__desc">
+            Core workflow control for small teams that want clean operations from day one.
+          </p>
+
+          <ul class="plan__list">
             <li>Core masters</li>
             <li>Basic PO workflow</li>
             <li>Email support</li>
           </ul>
-          <a class="btn btn--soft ripple" href="#contact">Choose Starter</a>
+
+          <a class="btn btn--soft magnetic ripple" href="#contact">
+            <span>Choose Starter</span>
+          </a>
         </article>
 
-        <article class="price price--pro reveal" style="--d:1">
-          <div class="price__top">
-            <h3>Growth</h3>
+        <article class="plan plan--featured spotlight">
+          <div class="plan__glow"></div>
+
+          <div class="plan__top">
+            <div>
+              <p class="plan__tagline">Best for scaling businesses</p>
+              <h3>Growth</h3>
+            </div>
             <span class="pill pill--hot">Most Popular</span>
           </div>
-          <div class="money">$49 <span>/mo</span></div>
-          <ul>
+
+          <div class="plan__price">
+            <span class="plan__currency">$</span>
+            <span class="priceAmount" data-monthly="49" data-yearly="470">49</span>
+            <span class="per">/mo</span>
+          </div>
+
+          <p class="plan__desc">
+            Powerful workflows, analytics, and role control for fast-moving teams.
+          </p>
+
+          <ul class="plan__list">
             <li>Approval tracking</li>
             <li>Analytics dashboard</li>
             <li>Roles & permissions</li>
             <li>Priority support</li>
           </ul>
-          <a class="btn btn--primary ripple" href="#contact">Start Free Trial</a>
+
+          <a class="btn btn--primary magnetic ripple" href="#contact">
+            <span class="btn__shine"></span>
+            <span>Start Free Trial</span>
+          </a>
         </article>
 
-        <article class="price reveal" style="--d:2">
-          <div class="price__top">
-            <h3>Enterprise</h3>
+        <article class="plan plan--enterprise spotlight">
+          <div class="plan__top">
+            <div>
+              <p class="plan__tagline">For custom operations</p>
+              <h3>Enterprise</h3>
+            </div>
             <span class="pill pill--orange">Custom</span>
           </div>
-          <div class="money">Let’s talk</div>
-          <ul>
+
+          <div class="plan__talk">Let’s talk</div>
+
+          <p class="plan__desc">
+            Tailored modules, onboarding, and support for more complex teams and workflows.
+          </p>
+
+          <ul class="plan__list">
             <li>Custom modules</li>
             <li>Dedicated onboarding</li>
             <li>SLA + support</li>
           </ul>
-          <a class="btn btn--soft ripple" href="#contact">Request Demo</a>
+
+          <a class="btn btn--soft magnetic ripple" href="#contact">
+            <span>Request Demo</span>
+          </a>
         </article>
       </div>
     </section>
 
-    <!-- ABOUT -->
     <section class="section container" id="about">
-      <div class="about reveal" style="--d:0">
-        <div>
-          <p class="kicker">About</p>
-          <h2>Made for textile & garment operations</h2>
-          <p class="sub">
-            InventTech is a web-based manufacturing and trading management system built to simplify daily operations,
-            keep data clean, and improve operational visibility across teams.
-          </p>
+  <div class="about-minimal">
+    <p class="kicker reveal" style="--d:0">About</p>
+
+    <div class="about-minimal__grid">
+      <div class="about-minimal__copy reveal" style="--d:1">
+        <h2>Built for businesses that want clean operations, faster decisions, and zero chaos.</h2>
+
+        <p class="about-minimal__lead">
+          InventTech brings inventory, sales, approvals, CRM, reporting, and branch visibility
+          into one sharp workflow — so your team stops chasing updates and starts working with clarity.
+        </p>
+
+        <div class="about-minimal__stats">
+          <div>
+            <strong>500+</strong>
+            <span>businesses</span>
+          </div>
+          <div>
+            <strong>99.9%</strong>
+            <span>uptime</span>
+          </div>
+          <div>
+            <strong>50+</strong>
+            <span>countries</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-minimal__rail">
+        <article class="about-minimal__item reveal" style="--d:2">
+          <span>01</span>
+          <div>
+            <h3>Bring everything into one system</h3>
+            <p>
+              Replace scattered spreadsheets, manual follow-ups, and disconnected tools
+              with one clean dashboard.
+            </p>
+          </div>
+        </article>
+
+        <article class="about-minimal__item reveal" style="--d:3">
+          <span>02</span>
+          <div>
+            <h3>Track approvals and operations live</h3>
+            <p>
+              Stay on top of inventory, purchases, sales, transfers, and daily workflows
+              with better visibility.
+            </p>
+          </div>
+        </article>
+
+        <article class="about-minimal__item reveal" style="--d:4">
+          <span>03</span>
+          <div>
+            <h3>Scale without operational mess</h3>
+            <p>
+              Manage more branches, more stock, and more people while keeping your data
+              clean and decision-making fast.
+            </p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feedback-scroll" id="feedback">
+  <div class="container">
+    <div class="section__head reveal" style="--d:0">
+      <p class="kicker">Feedback</p>
+      <h2>Teams move through these stories as they scroll</h2>
+      <p class="sub">
+        Real experiences from businesses using InventTech to simplify operations.
+      </p>
+    </div>
+  </div>
+
+  <div class="feedback-scroll__area" id="feedbackScrollArea">
+    <div class="feedback-scroll__pin">
+      <div class="container">
+        <div class="feedback-track" id="feedbackTrack">
+          <article class="feedback-card spotlight">
+            <div class="feedback-card__stars">★★★★★</div>
+            <p class="feedback-card__text">
+              “Our stock records became much cleaner within days. Earlier we were always matching
+              sheets manually. Now everything feels controlled.”
+            </p>
+            <div class="feedback-card__user">
+              <strong>Rahul Mehta</strong>
+              <span>Operations Manager · Retail Chain</span>
+            </div>
+          </article>
+
+          <article class="feedback-card spotlight">
+            <div class="feedback-card__stars">★★★★★</div>
+            <p class="feedback-card__text">
+              “The approval workflow removed a lot of back-and-forth. Our purchase process is now
+              faster and much easier to monitor.”
+            </p>
+            <div class="feedback-card__user">
+              <strong>Priya Shah</strong>
+              <span>Director · Textile Business</span>
+            </div>
+          </article>
+
+          <article class="feedback-card spotlight">
+            <div class="feedback-card__stars">★★★★★</div>
+            <p class="feedback-card__text">
+              “What we liked most was visibility. Branch data, stock movement, and reporting all
+              became easier to understand.”
+            </p>
+            <div class="feedback-card__user">
+              <strong>Aman Verma</strong>
+              <span>Founder · Distribution Company</span>
+            </div>
+          </article>
+
+          <article class="feedback-card spotlight">
+            <div class="feedback-card__stars">★★★★★</div>
+            <p class="feedback-card__text">
+              “It feels premium but still practical. The dashboard gives our team exactly what they
+              need without making things complicated.”
+            </p>
+            <div class="feedback-card__user">
+              <strong>Neha Patel</strong>
+              <span>Admin Head · Multi-branch Business</span>
+            </div>
+          </article>
+
+          <article class="feedback-card spotlight">
+            <div class="feedback-card__stars">★★★★★</div>
+            <p class="feedback-card__text">
+              “We reduced manual confusion in billing and inventory updates. It gave us better
+              confidence in daily operations.”
+            </p>
+            <div class="feedback-card__user">
+              <strong>Karan Joshi</strong>
+              <span>Owner · Supermarket Group</span>
+            </div>
+          </article>
+
+          <article class="feedback-card spotlight">
+            <div class="feedback-card__stars">★★★★★</div>
+            <p class="feedback-card__text">
+              “InventTech helped us connect approvals, sales, and stock under one system. That
+              alone saved us a lot of wasted effort.”
+            </p>
+            <div class="feedback-card__user">
+              <strong>Sneha Kapoor</strong>
+              <span>Business Lead · Manufacturing Team</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section class="section container" id="faqs">
+      <div class="faq-section">
+        <div class="section__head reveal" style="--d:0">
+          <p class="kicker">FAQs</p>
+          <h2>Questions businesses usually ask</h2>
+          <p class="sub">Everything you need to know before getting started with InventTech.</p>
         </div>
 
-        <div class="about__card tilt">
-          <div class="about__glow" aria-hidden="true"></div>
-          <h3>Why InventTech?</h3>
-          <p>Because spreadsheets don’t scale. Approvals get lost. Follow-ups waste time.</p>
-          <p><b>InventTech</b> keeps everything in one place: masters, materials, approvals, and analytics.</p>
+        <div class="faq-list" id="faqList">
+          <article class="faq-item scroll-card spotlight reveal" style="--d:0">
+            <button class="faq-q" type="button" aria-expanded="false">
+              <span>What kind of businesses is InventTech built for?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a">
+              <p>
+                InventTech is designed for inventory-heavy and process-driven businesses like
+                retail, textiles, warehousing, manufacturing, and multi-branch operations.
+              </p>
+            </div>
+          </article>
+
+          <article class="faq-item scroll-card spotlight reveal" style="--d:1">
+            <button class="faq-q" type="button" aria-expanded="false">
+              <span>Can I manage multiple branches or warehouses?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a">
+              <p>
+                Yes. You can manage stock movement, transfers, branch visibility, and reporting
+                across multiple locations from one dashboard.
+              </p>
+            </div>
+          </article>
+
+          <article class="faq-item scroll-card spotlight reveal" style="--d:2">
+            <button class="faq-q" type="button" aria-expanded="false">
+              <span>Does InventTech support approvals and purchase workflows?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a">
+              <p>
+                Yes. You can streamline approvals, purchase orders, operational checks, and
+                role-based actions with better visibility and control.
+              </p>
+            </div>
+          </article>
+
+          <article class="faq-item scroll-card spotlight reveal" style="--d:3">
+            <button class="faq-q" type="button" aria-expanded="false">
+              <span>Is there a free trial?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a">
+              <p>
+                Yes. You can start with a 14-day free trial to explore workflows, dashboards,
+                and core operational features.
+              </p>
+            </div>
+          </article>
+
+          <article class="faq-item scroll-card spotlight reveal" style="--d:4">
+            <button class="faq-q" type="button" aria-expanded="false">
+              <span>Can the platform be customized for my workflow?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-a">
+              <p>
+                Yes. Enterprise plans can include custom modules, onboarding support, and
+                workflows adapted to your business process.
+              </p>
+            </div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- CTA BAND -->
-    <section class="cta" aria-label="Call to action">
-      <div class="container cta__inner reveal" style="--d:0">
-        <h2>Ready to transform your business?</h2>
-        <p>Join 500+ businesses streamlining operations with InventTech.</p>
+    
 
-        <div class="cta__actions">
-          <a class="btn btn--glass ripple" href="#contact">Schedule a Demo</a>
-          <a class="btn btn--glass2 ripple" href="#pricing">View Pricing</a>
-        </div>
+    <section class="cta" id="cta" aria-label="Call to action">
+      <div class="container cta__inner">
+        <div class="cta__card reveal spotlight" style="--d:0">
+          <div class="cta__badge">
+            <span class="sw sw--pink"></span>
+            <span class="sw sw--blue"></span>
+            <span class="sw sw--orange"></span>
+            <span class="cta__badgeText">Powered by InventTech</span>
+          </div>
 
-        <div class="cta__meta">
-          <span>✓ Setup in minutes</span>
-          <span>✓ Enterprise security</span>
-          <span>✓ 24/7 support</span>
+          <h2>Ready to transform your business?</h2>
+          <p>Join 500+ businesses streamlining operations with InventTech.</p>
+
+          <div class="cta__actions">
+            <a class="btn btn--primary btn--lg magnetic ripple" href="#contact">
+              <span class="btn__shine"></span>
+              <span>Schedule a Demo</span>
+              <span class="btn__icon">→</span>
+            </a>
+
+            <a class="btn btn--outlineGrad btn--lg magnetic ripple" href="#pricing">
+              <span>View Pricing</span>
+            </a>
+          </div>
+
+          <div class="cta__meta">
+            <span>✓ Setup in minutes</span>
+            <span>✓ Enterprise security</span>
+            <span>✓ 24/7 support</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section class="section container" id="contact">
-      <div class="contact reveal" style="--d:0">
+      <div class="contact reveal spotlight" style="--d:0">
         <div class="contact__left">
           <p class="kicker">Contact</p>
           <h2>See InventTech in action</h2>
@@ -366,75 +685,94 @@
           </div>
         </div>
 
-        <form class="form" onsubmit="return false;" aria-label="Request demo form">
+        <form class="form" id="contactForm">
           <label>
             <span>Name</span>
-            <input type="text" placeholder="Your name" required />
+            <input type="text" name="name" placeholder="Your name" required />
           </label>
+
           <label>
             <span>Email</span>
-            <input type="email" placeholder="you@company.com" required />
+            <input type="email" name="email" placeholder="you@company.com" required />
           </label>
+
           <label>
             <span>Company</span>
-            <input type="text" placeholder="Company name" />
+            <input type="text" name="company" placeholder="Company name" />
           </label>
-          <button class="btn btn--primary ripple" type="submit">Request Demo</button>
+
+          <label>
+            <span>Message</span>
+            <textarea name="message" rows="4" placeholder="Tell us about your business"></textarea>
+          </label>
+
+          <button class="btn btn--primary magnetic ripple" type="submit">
+            <span class="btn__shine"></span>
+            <span>Request Demo</span>
+          </button>
+
           <p class="tiny">By submitting, you agree to be contacted about InventTech.</p>
+          <p class="form__msg" id="formMsg" aria-live="polite"></p>
         </form>
       </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="footer">
-      <div class="container footer__inner">
-        <div class="foot__brand">
-          <div class="foot__top">
-            <img class="foot__logo" src="logo.png" alt="InventTech logo" />
-            <div class="foot__name">InventTech<span class="dot">.</span></div>
+    <footer class="footer footer--minimal">
+      <div class="container">
+        <div class="footer-min">
+          <div class="footer-min__top">
+            <div class="footer-min__brand">
+              <a class="footer-min__logo" href="#top" aria-label="InventTech Home">InventTech<span
+                  class="dot">.</span></a>
+              <p class="footer-min__tag">
+                ERP & inventory management for clean, fast, visible operations.
+              </p>
+            </div>
+
+            <div class="footer-min__cta">
+              <a class="footer-min__link" href="#features">Features</a>
+              <a class="footer-min__link" href="#pricing">Pricing</a>
+              <a class="footer-min__link" href="#about">About</a>
+              <a class="footer-min__link" href="#contact">Contact</a>
+              <a class="btn btn--primary magnetic ripple" href="#contact">
+                <span class="btn__shine"></span>
+                <span>Request Demo</span>
+              </a>
+            </div>
           </div>
-          <p class="foot__desc">
-            All-in-one ERP & Inventory Management software for fast, clean, visible operations.
-          </p>
 
-          <div class="foot__info">
-            <div>✉️ info@inventtech.com</div>
-            <div>📞 +91 98765 43210</div>
-            <div>📍 Noida, India</div>
+          <div class="footer-min__mid">
+            <div class="footer-min__col">
+              <span class="footer-min__label">Product</span>
+              <a href="#features">Features</a>
+              <a href="#industries">Solutions</a>
+              <a href="#pricing">Pricing</a>
+            </div>
+
+            <div class="footer-min__col">
+              <span class="footer-min__label">Company</span>
+              <a href="#about">About</a>
+              <a href="#faqs">FAQs</a>
+              <a href="#contact">Demo</a>
+            </div>
+
+            <div class="footer-min__col">
+              <span class="footer-min__label">Legal</span>
+              <a href="#top">Privacy Policy</a>
+              <a href="#top">Terms</a>
+              <a href="#top">Security</a>
+            </div>
           </div>
-        </div>
 
-        <div class="foot__col">
-          <h4>Product</h4>
-          <a href="#features">Features</a>
-          <a href="#industries">Solutions</a>
-          <a href="#pricing">Pricing</a>
-          <a href="#contact">Demo</a>
-        </div>
+          <div class="footer-min__bottom">
+            <p>© <span id="year"></span> InventTech. All rights reserved.</p>
 
-        <div class="foot__col">
-          <h4>Company</h4>
-          <a href="#about">About</a>
-          <a href="#contact">Contact</a>
-          <a href="#top">Careers</a>
-          <a href="#top">Blog</a>
-        </div>
-
-        <div class="foot__col">
-          <h4>Legal</h4>
-          <a href="#top">Privacy Policy</a>
-          <a href="#top">Terms</a>
-          <a href="#top">Security</a>
-          <a href="#top">Compliance</a>
-        </div>
-      </div>
-
-      <div class="container foot__bottom">
-        <div class="muted">© <span id="year"></span> InventTech. All rights reserved.</div>
-        <div class="social">
-          <a href="#top" aria-label="Twitter">𝕏</a>
-          <a href="#top" aria-label="LinkedIn">in</a>
-          <a href="#top" aria-label="Instagram">◎</a>
+            <div class="footer-min__bottom-links">
+              <a href="#top">Back to top</a>
+              <span></span>
+              <a href="#contact">Contact</a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
@@ -442,4 +780,5 @@
 
   <script src="script.js"></script>
 </body>
+
 </html>
