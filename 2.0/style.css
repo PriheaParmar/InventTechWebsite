@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Faculty+Glyphic&family=Lexend:wght@100..900&family=Outfit:wght@100..900&display=swap');
+
+
 :root {
   --bg: #050505;
   --bg2: #0d0d0d;
@@ -43,7 +46,7 @@ html { scroll-behavior: smooth; }
 body {
   margin: 0;
   color: var(--text);
-  font-family: "Inter", sans-serif;
+  font-family:"Lexend", system-ui, -apple-system, Segoe UI, Roboto, Arial;
   background:
     radial-gradient(circle at 14% 16%, rgba(255, 79, 163, 0.18), transparent 18%),
     radial-gradient(circle at 84% 14%, rgba(66, 183, 255, 0.18), transparent 20%),
@@ -397,13 +400,13 @@ ul[role="list"] {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-weight: 800;
   letter-spacing: -0.02em;
 }
 
 .brand__text {
-  font-size: 1.08rem;
+  font-size: 1.9rem;
   color: var(--white);
+  font-family:"Faculty Glyphic";
 }
 
 .nav { position: relative; }
@@ -437,6 +440,7 @@ ul[role="list"] {
 .nav__links {
   display: flex;
   gap: 22px;
+  font-weight: 200;
   align-items: center;
 }
 
@@ -667,6 +671,7 @@ ul[role="list"] {
   line-height: 0.98;
   letter-spacing: -0.05em;
   color: var(--white);
+  font-weight: 400;
 }
 
 .hero__sub,
@@ -683,6 +688,7 @@ ul[role="list"] {
   margin: 22px 0 0;
   font-size: 1.06rem;
   line-height: 1.8;
+  font-weight: 350;
 }
 
 .hero__actions {
@@ -707,8 +713,6 @@ ul[role="list"] {
   padding: 14px 16px;
   border-radius: 18px;
   min-height: 72px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.05);
 }
 
 .mini__icon {
@@ -725,8 +729,7 @@ ul[role="list"] {
 
 .mini__v {
   color: var(--text);
-  font-size: 0.92rem;
-  font-weight: 600;
+  font-size: 0.7rem;
   line-height: 1.45;
 }
 
