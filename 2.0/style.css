@@ -1138,9 +1138,6 @@ ul[role="list"] {
   overflow: hidden;
   padding: 34px;
   border-radius: 34px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.065), rgba(255,255,255,0.025));
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow: 0 32px 100px rgba(0,0,0,0.34);
 }
 
 .about-character__bg {
@@ -1156,13 +1153,13 @@ ul[role="list"] {
   opacity: 0.22;
   animation: aboutOrbFloat 10s ease-in-out infinite alternate;
 }
-
+/* 
+.about-logo{border: 2px solid red;} */
 .about-character__orb--1 {
   width: 260px;
   height: 260px;
   top: 6%;
   left: -40px;
-  background: rgba(255,79,163,0.30);
 }
 
 .about-character__orb--2 {
