@@ -2743,3 +2743,7 @@ ul[role="list"] {
   justify-content: center;
   font-size: 12px;
 }
+.logo-header{
+  width: 38px ;
+  height: 38px;
+}
