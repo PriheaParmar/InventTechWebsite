@@ -354,7 +354,7 @@ const featureData = [
     label: "Inventory",
     title: "Smart Inventory Tracking",
     desc: "Track stock levels in real time across locations with alerts, reorder points, and movement visibility.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1600&auto=format&fit=crop",
+    image: "https://www.freepik.com/free-photo/medium-shot-woman-with-tablet_13291105.htm#fromView=search&page=2&position=33&uuid=19035bb8-3368-4a79-a150-688b4169a14d&query=smart+inventory+tracking",
     alt: "Inventory preview"
   },
   {
@@ -362,7 +362,7 @@ const featureData = [
     label: "Warehouses",
     title: "Multi-Warehouse Management",
     desc: "Manage transfers, dispatches, and branch-level stock from one dashboard.",
-    image: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1600&auto=format&fit=crop",
+    image: "https://www.freepik.com/free-photo/medium-shot-woman-with-tablet_13291105.htm#fromView=search&page=2&position=33&uuid=19035bb8-3368-4a79-a150-688b4169a14d&query=smart+inventory+tracking",
     alt: "Warehouse preview"
   },
   {
@@ -370,7 +370,7 @@ const featureData = [
     label: "Reports",
     title: "Real-time Dashboard & Reports",
     desc: "Get analytics, approvals, summaries, and reporting in one live dashboard.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1600&auto=format&fit=crop",
+    image: "https://www.freepik.com/free-photo/medium-shot-woman-with-tablet_13291105.htm#fromView=search&page=2&position=33&uuid=19035bb8-3368-4a79-a150-688b4169a14d&query=smart+inventory+tracking",
     alt: "Reports preview"
   },
   {
@@ -378,7 +378,7 @@ const featureData = [
     label: "Sales",
     title: "Sales & Purchase Management",
     desc: "Handle purchase orders, invoicing, approvals, and payment tracking in one workflow.",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1600&auto=format&fit=crop",
+    image: "https://www.freepik.com/free-photo/medium-shot-woman-with-tablet_13291105.htm#fromView=search&page=2&position=33&uuid=19035bb8-3368-4a79-a150-688b4169a14d&query=smart+inventory+tracking",
     alt: "Sales preview"
   },
   {
@@ -386,7 +386,7 @@ const featureData = [
     label: "CRM",
     title: "CRM & Customer Tracking",
     desc: "Follow up with customers and manage records from one clean workspace.",
-    image: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1600&auto=format&fit=crop",
+    image: "https://www.freepik.com/free-photo/medium-shot-woman-with-tablet_13291105.htm#fromView=search&page=2&position=33&uuid=19035bb8-3368-4a79-a150-688b4169a14d&query=smart+inventory+tracking",
     alt: "CRM preview"
   },
   {
@@ -394,7 +394,7 @@ const featureData = [
     label: "Billing",
     title: "Barcode & Billing Integration",
     desc: "Scan barcodes, update inventory, and generate invoices faster.",
-    image: "https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1600&auto=format&fit=crop",
+    image: "https://www.freepik.com/free-photo/medium-shot-woman-with-tablet_13291105.htm#fromView=search&page=2&position=33&uuid=19035bb8-3368-4a79-a150-688b4169a14d&query=smart+inventory+tracking",
     alt: "Billing preview"
   }
 ];
