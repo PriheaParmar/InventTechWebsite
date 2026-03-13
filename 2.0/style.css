@@ -630,8 +630,7 @@ ul[role="list"] {
 .strip__inner,
 .contact,
 .cta__card,
-.feature-panel,
-.industries-showcase__inner {
+.feature-panel{
   background: linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.03));
   border: 1px solid rgba(255,255,255,0.10);
   box-shadow: 0 28px 80px rgba(0,0,0,0.35);
@@ -1108,7 +1107,7 @@ ul[role="list"] {
   display: grid;
   place-items: center;
   border-radius: 18px;
-  font-size: 1.18rem;
+  font-size: 1.5rem;
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.08);
 }
