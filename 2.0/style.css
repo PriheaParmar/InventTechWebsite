@@ -1585,6 +1585,55 @@ ul[role="list"] {
   color: var(--muted);
   font-size: 0.92rem;
 }
+.feedback-card{
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  min-height:340px;
+}
+
+.feedback-card__top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:16px;
+}
+
+.feedback-card__logo{
+  height:48px;
+  opacity:0.9;
+  transform:scale(1.5);
+  border-radius: 30%;
+  margin-left: 10px;
+}
+
+.feedback-card__stars{
+  font-size:0.9rem;
+  letter-spacing:0.12em;
+}
+
+.feedback-card__text{
+  flex:1;
+  margin:0 0 34px;
+  margin-top: 10px;
+  color:var(--text-soft);
+  line-height:1.8;
+}
+
+.feedback-card__user{
+  border-top:1px solid rgba(255,255,255,0.08);
+  padding-top:16px;
+}
+
+.feedback-card__user strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.feedback-card__user span{
+  font-size:0.9rem;
+  color:var(--muted);
+} 
 
 /* faq */
 
