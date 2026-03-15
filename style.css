@@ -272,15 +272,31 @@ ul[role="list"] {
     0 0 12px rgba(255, 255, 255, 0.12),
     0 0 30px rgba(255, 255, 255, 0.06);
   animation: splashBrandIn 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.15s both;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-loader{
+  height: 100px;
+  width: 100px;
+  margin-bottom: 10px;
 }
 
 .intro-loader__word {
   display: inline-block;
-  background: linear-gradient(90deg, #ffffff7e 0%, #f1f1f1 12%, #ff5ca5 40%, #f9b363 72%, #4ec2fc 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--blue);
   font-weight: 400;
-  font-family: "Faculty Glyphic";
+  font-family: "Lexend";
+  font-size: clamp(1rem, 2vw, 2.0rem);
+  letter-spacing: -0.05em;
+}
+.intro-loader__slogan {
+  display: inline-block;
+  color: var(--white);
+  font-weight: 400;
+  font-family: "Lexend";
+  font-size: clamp(2rem, 5vw, 4.0rem);
 }
 
 .intro-loader.is-exiting {
@@ -2226,7 +2242,11 @@ ul[role="list"] {
   display: grid;
   gap: 8px;
 }
-
+.required{
+  color:#ff4d4f;
+  font-weight:600;
+  margin-left:4px;
+}
 .form label span {
   font-weight: 600;
   font-size: 0.95rem;

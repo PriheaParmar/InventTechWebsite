@@ -13,15 +13,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
     rel="stylesheet" />
 
-  <link rel="stylesheet" href="style.css" /><link rel="icon" type="image/png" href="favicon.ico.png">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.ico.png">
 </head>
 
 <body class="preload">
   <div class="intro-loader" id="introLoader" aria-hidden="true">
     <div class="intro-loader__inner">
       <div class="intro-loader__glow"></div>
+      <span><img src="logo.png" class="logo-loader" alt=""></span>
       <div class="intro-loader__brand">
-        <span class="intro-loader__word">InventTech . &nbsp;</span>
+        <span class="intro-loader__word intro-loader__slogan ">InventTech . &nbsp;</span>
+        <span class="intro-loader__word">Where Invention Meets Inventory</span>
 
       </div>
     </div>
@@ -705,12 +708,12 @@
           action="https://script.google.com/macros/s/AKfycbxYS3xcGPdi1spj-niBzF9z4s0mZ5GdnhuZikQyIIcuK-Q1tYqLF8KOabkIiByArsty/exec"
           target="hidden_iframe">
           <label>
-            <span>Name</span>
+            <span>Name <span class="required">*</span></span>
             <input type="text" name="name" placeholder="Your name" required />
           </label>
 
           <label>
-            <span>Email</span>
+            <span>Email <span class="required">*</span></span>
             <input type="email" name="email" placeholder="you@company.com" required />
           </label>
 
@@ -732,14 +735,14 @@
           <p class="tiny">By submitting, you agree to be contacted about InventTech.</p>
           <p class="form__msg" id="formMsg" aria-live="polite"></p>
         </form>
-        </form>
-<div id="popup" class="popup">✔ Request sent!</div>
+        
+        <div id="popup" class="popup">✔ Request sent!</div>
 
-<iframe name="hidden_iframe" style="display:none;"></iframe>
+        <iframe name="hidden_iframe" style="display:none;"></iframe>
 
-<audio id="tingSound">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_2b7b0c8f1b.mp3">
-</audio>
+        <audio id="tingSound">
+          <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_2b7b0c8f1b.mp3">
+        </audio>
       </div>
     </section>
 
@@ -819,29 +822,29 @@
   </main>
 
   <script src="script.js"></script>
-  
+
 </body>
 
 <script>
 
-window.onload = function(){
+  window.onload = function () {
 
-const form = document.getElementById("contactForm");
-const popup = document.getElementById("popup");
-const sound = document.getElementById("tingSound");
+    const form = document.getElementById("contactForm");
+    const popup = document.getElementById("popup");
+    const sound = document.getElementById("tingSound");
 
-form.addEventListener("submit", function(){
+    form.addEventListener("submit", function () {
 
-  popup.classList.add("show");
-  sound.play();
+      popup.classList.add("show");
+      sound.play();
 
-  setTimeout(function(){
-    popup.classList.remove("show");
-  },3500);
+      setTimeout(function () {
+        popup.classList.remove("show");
+      }, 3500);
 
-});
+    });
 
-}
+  }
 
 </script>
 
