@@ -23,7 +23,7 @@
       <div class="intro-loader__glow"></div>
       <span><img src="logo.png" class="logo-loader" alt=""></span>
       <div class="intro-loader__brand">
-        <span class="intro-loader__word intro-loader__slogan ">InventTech . &nbsp;</span>
+        <span class="intro-loader__word intro-loader__slogan ">InventTech. &nbsp;</span>
         <span class="intro-loader__word">Where Invention Meets Inventory</span>
 
       </div>
@@ -714,7 +714,8 @@
 
           <label>
             <span>Email <span class="required">*</span></span>
-            <input type="email" name="email" placeholder="you@company.com" required />
+            <input type="email" name="email" placeholder="you@company.com" required
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" />
           </label>
 
           <label>
@@ -735,7 +736,7 @@
           <p class="tiny">By submitting, you agree to be contacted about InventTech.</p>
           <p class="form__msg" id="formMsg" aria-live="polite"></p>
         </form>
-        
+
         <div id="popup" class="popup">✔ Request sent!</div>
 
         <iframe name="hidden_iframe" style="display:none;"></iframe>

@@ -1,3 +1,26 @@
+let scrollTicking = false;
+
+function handleScrollAnimations(){
+
+  updateProgressBar();
+  updateStripCards();
+  updateFeatureOnScroll();
+  updateIndustriesFall();
+  updateAboutCharacterScroll();
+  updateFeedbackScroll();
+
+  scrollTicking = false;
+}
+
+window.addEventListener("scroll", () => {
+
+  if(!scrollTicking){
+    requestAnimationFrame(handleScrollAnimations);
+    scrollTicking = true;
+  }
+
+}, { passive:true });
+
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -97,7 +120,6 @@ function updateProgressBar() {
 }
 
 updateProgressBar();
-window.addEventListener("scroll", updateProgressBar, { passive: true });
 window.addEventListener("resize", updateProgressBar);
 
 /* reveal */
@@ -301,18 +323,24 @@ const contactForm = $("#contactForm");
 const formMessage = $("#formMsg");
 
 if (contactForm && formMessage) {
-  contactForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+  contactForm.addEventListener("submit", function(event){
 
-    const data = new FormData(contactForm);
-    const name = String(data.get("name") || "").trim();
+  if(!contactForm.checkValidity()){
+    return; // let browser show validation errors
+  }
 
-    formMessage.textContent = name
-      ? `Thanks, ${name}! Your demo request has been received.`
-      : "Thanks! Your demo request has been received.";
+  event.preventDefault();
 
-    contactForm.reset();
-  });
+  const data = new FormData(contactForm);
+  const name = String(data.get("name") || "").trim();
+
+  formMessage.textContent = name
+    ? `Thanks, ${name}! Your demo request has been received.`
+    : "Thanks! Your demo request has been received.";
+
+  contactForm.reset();
+});
+
 }
 
 /* strip cards */
@@ -342,7 +370,6 @@ if (statsStrip && stripCards.length) {
     stripCards.forEach((card) => card.classList.add("is-visible"));
   } else {
     updateStripCards();
-    window.addEventListener("scroll", updateStripCards, { passive: true });
     window.addEventListener("resize", updateStripCards);
   }
 }
@@ -464,7 +491,6 @@ function updateFeatureOnScroll() {
 
 if (featureScrollArea && featurePanel) {
   setFeatureContent(0);
-  window.addEventListener("scroll", updateFeatureOnScroll, { passive: true });
   window.addEventListener("resize", updateFeatureOnScroll);
 }
 
@@ -510,7 +536,6 @@ function updateIndustriesFall() {
 
 if (industriesFallWrap && industryCards.length) {
   updateIndustriesFall();
-  window.addEventListener("scroll", updateIndustriesFall, { passive: true });
   window.addEventListener("resize", updateIndustriesFall);
 }
 
@@ -555,6 +580,7 @@ function setLineProgress(lineIndex, progress) {
 }
 
 function updateAboutCharacterScroll() {
+  if(window.innerWidth < 768) return;
   if (!aboutStage || !aboutLineCharMap.length) return;
 
   const rect = aboutStage.getBoundingClientRect();
@@ -583,7 +609,6 @@ function updateAboutCharacterScroll() {
 }
 
 updateAboutCharacterScroll();
-window.addEventListener("scroll", updateAboutCharacterScroll, { passive: true });
 window.addEventListener("resize", updateAboutCharacterScroll);
 
 /* pricing reveal */
@@ -648,7 +673,6 @@ function updateFeedbackScroll() {
 
 if (feedbackScrollArea && feedbackTrack) {
   updateFeedbackScroll();
-  window.addEventListener("scroll", updateFeedbackScroll, { passive: true });
   window.addEventListener("resize", updateFeedbackScroll);
 }
 
