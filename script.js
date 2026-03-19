@@ -249,14 +249,19 @@ if (!prefersReducedMotion) {
 
   spotlightTargets.forEach(attachSpotlight);
 }
-/* magnetic */
-function attachMagnetic(element, strength = 0.14) {
+function attachMagnetic(element, strength = 0.12) {
   let raf = 0;
+  let rect = null;
+
+  const updateRect = () => {
+    rect = element.getBoundingClientRect();
+  };
 
   const onMove = (event) => {
+    if (!rect) updateRect();
+
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(() => {
-      const rect = element.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
 
@@ -268,17 +273,17 @@ function attachMagnetic(element, strength = 0.14) {
     });
   };
 
+  const onEnter = () => updateRect();
+
   const reset = () => {
     element.style.setProperty("--bx", "0px");
     element.style.setProperty("--by", "0px");
   };
 
+  element.addEventListener("pointerenter", onEnter, { passive: true });
   element.addEventListener("pointermove", onMove, { passive: true });
-  element.addEventListener("pointerleave", reset);
-}
-
-if (!prefersReducedMotion) {
-  $$(".magnetic").forEach((element) => attachMagnetic(element));
+  element.addEventListener("pointerleave", reset, { passive: true });
+  window.addEventListener("resize", updateRect);
 }
 
 /* tilt */
@@ -506,24 +511,31 @@ function animateFeatureChange(index) {
   }, 220);
 }
 
+const featureSteps = $$(".feature-step");
+
 function updateFeatureOnScroll() {
-  if (!featureScrollArea || window.innerWidth <= 980) return;
+  if (!featureScrollArea || !featureSteps.length || window.innerWidth <= 980) return;
 
-  const rect = featureScrollArea.getBoundingClientRect();
-  const totalScroll = featureScrollArea.offsetHeight - window.innerHeight;
-  if (totalScroll <= 0) return;
+  let activeIndex = 0;
+  const triggerPoint = window.innerHeight * 0.45;
 
-  const current = Math.min(Math.max(-rect.top, 0), totalScroll);
-  const segment = totalScroll / featureData.length;
+  featureSteps.forEach((step, index) => {
+    const rect = step.getBoundingClientRect();
+    if (rect.top <= triggerPoint) {
+      activeIndex = index;
+    }
+  });
 
-  let index = Math.floor(current / segment);
-  if (index >= featureData.length) index = featureData.length - 1;
+  if (activeIndex >= featureData.length) {
+    activeIndex = featureData.length - 1;
+  }
 
-  animateFeatureChange(index);
+  animateFeatureChange(activeIndex);
 }
 
 if (featureScrollArea && featurePanel) {
   setFeatureContent(0);
+  updateFeatureOnScroll();
   window.addEventListener("resize", updateFeatureOnScroll);
 }
 

@@ -51,7 +51,7 @@
       </a>
 
       <nav class="nav" aria-label="Primary navigation">
-        <button class="nav__toggle magnetic" id="navToggle" aria-label="Open menu" aria-expanded="false"
+        <button class="nav__toggle" id="navToggle" aria-label="Open menu" aria-expanded="false"
           aria-controls="navPanel" type="button">
           <span></span><span></span><span></span>
         </button>
@@ -68,10 +68,10 @@
           </ul>
 
           <div class="nav__cta">
-            <a class="btn btn--ghost magnetic ripple" href="#pricing">
+            <a class="btn btn--ghost ripple" href="#pricing">
               <span>Explore Plans</span>
             </a>
-            <a class="btn btn--primary magnetic ripple" href="#contact">
+            <a class="btn btn--primary ripple" href="#contact">
               <span class="btn__shine"></span>
               <span>Request Demo</span>
             </a>
@@ -109,7 +109,7 @@
             <span class="btn__icon">→</span>
           </a>
 
-          <a class="btn btn--soft btn--lg magnetic ripple" href="#pricing">
+          <a class="btn btn--soft btn--lg ripple" href="#pricing">
             <span>Explore Plans</span>
           </a>
         </div>
@@ -182,42 +182,49 @@
       </div>
 
       <div class="feature-showcase__scroll" id="featureScrollArea">
-        <div class="feature-showcase__pin">
-          <div class="container">
-            <div class="feature-showcase__frame">
-              <aside class="feature-showcase__side">
-                <div class="feature-count">
-                  <span id="featureCurrent">01</span>
-                  <span class="feature-count__line"></span>
-                  <span>06</span>
-                </div>
-              </aside>
+  <div class="feature-showcase__pin">
+    <div class="container">
+      <div class="feature-showcase__frame">
+        <aside class="feature-showcase__side">
+          <div class="feature-count">
+            <span id="featureCurrent">01</span>
+            <span class="feature-count__line"></span>
+            <span>06</span>
+          </div>
+        </aside>
 
-              <div class="feature-panel spotlight" id="featurePanel">
-                <div class="feature-panel__copy">
-                  <div class="feature-panel__meta">
-                    <span class="feature-panel__num" id="featureNum">01</span>
-                    <span class="feature-panel__label" id="featureLabel">Inventory</span>
-                  </div>
-
-                  <h3 id="featureTitle">Smart Inventory Tracking</h3>
-                  <p id="featureDesc">
-                    Track stock levels in real time across locations with alerts,
-                    reorder points, and movement visibility.
-                  </p>
-                </div>
-
-                <div class="feature-panel__media">
-                  <span class="feature-panel__glitch"></span>
-                  <img id="featureImage"
-                    src="https://plus.unsplash.com/premium_photo-1682147873962-b65d2f1b9d28?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                    alt="Inventory preview" />
-                </div>
-              </div>
+        <div class="feature-panel spotlight" id="featurePanel">
+          <div class="feature-panel__copy">
+            <div class="feature-panel__meta">
+              <span class="feature-panel__num" id="featureNum">01</span>
+              <span class="feature-panel__label" id="featureLabel">Inventory</span>
             </div>
+
+            <h3 id="featureTitle">Smart Inventory Tracking</h3>
+            <p id="featureDesc">
+              Track stock levels in real time across locations with alerts,
+              reorder points, and movement visibility.
+            </p>
+          </div>
+
+          <div class="feature-panel__media">
+            <span class="feature-panel__glitch"></span>
+            <img id="featureImage"
+              src="https://plus.unsplash.com/premium_photo-1682147873962-b65d2f1b9d28?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt="Inventory preview" />
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="feature-step" data-step="0"></div>
+  <div class="feature-step" data-step="1"></div>
+  <div class="feature-step" data-step="2"></div>
+  <div class="feature-step" data-step="3"></div>
+  <div class="feature-step" data-step="4"></div>
+  <div class="feature-step" data-step="5"></div>
+</div>
     </section>
 
     <section class="section container" id="industries">
@@ -365,7 +372,7 @@
               <li>Simple team adoption and rollout</li>
             </ul>
 
-            <a class="btn btn--primary magnetic ripple pricing-clean__btn" href="#contact">
+            <a class="btn btn--primary ripple pricing-clean__btn" href="#contact">
               <span class="btn__shine"></span>
               <span>Book Demo</span>
             </a>
@@ -393,7 +400,7 @@
               <li>Faster coordination across operations</li>
             </ul>
 
-            <a class="btn btn--primary magnetic ripple pricing-clean__btn" href="#contact">
+            <a class="btn btn--primary ripple pricing-clean__btn" href="#contact">
               <span class="btn__shine"></span>
               <span>Talk to Sales</span>
             </a>
@@ -421,7 +428,7 @@
               <li>Long-term scaling support</li>
             </ul>
 
-            <a class="btn btn--outlineGrad magnetic ripple pricing-clean__btn" href="#contact">
+            <a class="btn btn--outlineGrad ripple pricing-clean__btn" href="#contact">
               <span>Request Plan</span>
             </a>
           </article>
@@ -441,10 +448,10 @@
           </div>
 
           <div class="feedback-nav" aria-label="Testimonials navigation">
-            <button class="feedback-nav__btn magnetic" id="feedbackPrev" type="button" aria-label="Previous testimonial">
+            <button class="feedback-nav__btn" id="feedbackPrev" type="button" aria-label="Previous testimonial">
               ←
             </button>
-            <button class="feedback-nav__btn magnetic" id="feedbackNext" type="button" aria-label="Next testimonial">
+            <button class="feedback-nav__btn" id="feedbackNext" type="button" aria-label="Next testimonial">
               →
             </button>
           </div>
@@ -661,7 +668,7 @@
               <span class="btn__icon">→</span>
             </a>
 
-            <a class="btn btn--outlineGrad btn--lg magnetic ripple" href="#pricing">
+            <a class="btn btn--outlineGrad btn--lg ripple" href="#pricing">
               <span>View Plans</span>
             </a>
           </div>
@@ -713,7 +720,7 @@
             <textarea name="message" rows="4" placeholder="Tell us about your business"></textarea>
           </label>
 
-          <button class="btn btn--primary magnetic ripple" type="submit">
+          <button class="btn btn--primary ripple" type="submit">
             <span class="btn__shine"></span>
             <span>Request Demo</span>
           </button>
