@@ -1,7 +1,6 @@
 let scrollTicking = false;
 
-function handleScrollAnimations(){
-
+function handleScrollAnimations() {
   updateProgressBar();
   updateStripCards();
   updateFeatureOnScroll();
@@ -13,13 +12,11 @@ function handleScrollAnimations(){
 }
 
 window.addEventListener("scroll", () => {
-
-  if(!scrollTicking){
+  if (!scrollTicking) {
     requestAnimationFrame(handleScrollAnimations);
     scrollTicking = true;
   }
-
-}, { passive:true });
+}, { passive: true });
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
@@ -58,6 +55,24 @@ window.addEventListener("load", () => {
   }, SPLASH_DURATION);
 
   setTimeout(removeSplash, SPLASH_DURATION + 1800);
+});
+
+/* popup + sound */
+window.addEventListener("load", function () {
+  const form = document.getElementById("contactForm");
+  const popup = document.getElementById("popup");
+  const sound = document.getElementById("tingSound");
+
+  if (!form || !popup || !sound) return;
+
+  form.addEventListener("submit", function () {
+    popup.classList.add("show");
+    sound.play();
+
+    setTimeout(function () {
+      popup.classList.remove("show");
+    }, 3500);
+  });
 });
 
 /* nav */
@@ -323,24 +338,22 @@ const contactForm = $("#contactForm");
 const formMessage = $("#formMsg");
 
 if (contactForm && formMessage) {
-  contactForm.addEventListener("submit", function(event){
+  contactForm.addEventListener("submit", function (event) {
+    if (!contactForm.checkValidity()) {
+      return;
+    }
 
-  if(!contactForm.checkValidity()){
-    return; // let browser show validation errors
-  }
+    event.preventDefault();
 
-  event.preventDefault();
+    const data = new FormData(contactForm);
+    const name = String(data.get("name") || "").trim();
 
-  const data = new FormData(contactForm);
-  const name = String(data.get("name") || "").trim();
+    formMessage.textContent = name
+      ? `Thanks, ${name}! Your demo request has been received.`
+      : "Thanks! Your demo request has been received.";
 
-  formMessage.textContent = name
-    ? `Thanks, ${name}! Your demo request has been received.`
-    : "Thanks! Your demo request has been received.";
-
-  contactForm.reset();
-});
-
+    contactForm.reset();
+  });
 }
 
 /* strip cards */
@@ -405,7 +418,7 @@ const featureData = [
     label: "Sales",
     title: "Sales & Purchase Management",
     desc: "Handle purchase orders, invoicing, approvals, and payment tracking in one workflow.",
-    image: "https://images.unsplash.com/photo-1642543348745-03b1219733d9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D  ",
+    image: "https://images.unsplash.com/photo-1642543348745-03b1219733d9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     alt: "Sales preview"
   },
   {
@@ -539,66 +552,42 @@ if (industriesFallWrap && industryCards.length) {
   window.addEventListener("resize", updateIndustriesFall);
 }
 
-/* ABOUT character by character */
+/* ABOUT vertical ticker */
 const aboutStage = $("#aboutStage");
 const aboutLogoBox = $("#aboutLogoBox");
 const aboutLineEls = $$(".about-character__line");
 
-function splitLineToChars(element) {
-  const text = element.dataset.text || element.textContent || "";
-  element.textContent = "";
-  const chars = [];
-
-  for (const char of text) {
-    const span = document.createElement("span");
-    span.className = "about-character__char";
-    span.textContent = char;
-    element.appendChild(span);
-    chars.push(span);
+aboutLineEls.forEach((line) => {
+  if (!line.textContent.trim() && line.dataset.text) {
+    line.textContent = line.dataset.text;
   }
-
-  return chars;
-}
-
-const aboutLineCharMap = aboutLineEls.map((line) => ({
-  el: line,
-  chars: splitLineToChars(line)
-}));
-
-function setLineProgress(lineIndex, progress) {
-  const item = aboutLineCharMap[lineIndex];
-  if (!item) return;
-
-  const total = item.chars.length;
-  const activeCount = Math.floor(total * progress);
-
-  item.el.classList.toggle("is-active", progress > 0.05);
-
-  item.chars.forEach((char, idx) => {
-    char.classList.toggle("is-on", idx < activeCount);
-  });
-}
+});
 
 function updateAboutCharacterScroll() {
-  if(window.innerWidth < 768) return;
-  if (!aboutStage || !aboutLineCharMap.length) return;
+  if (!aboutStage || !aboutLineEls.length) return;
+  if (window.innerWidth < 768) return;
 
   const rect = aboutStage.getBoundingClientRect();
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-  const sectionStart = viewportHeight * 0.78;
+
+  const sectionStart = viewportHeight * 0.82;
   const sectionEnd = viewportHeight * 0.18;
   const raw = (sectionStart - rect.top) / (sectionStart - sectionEnd);
   const progress = Math.max(0, Math.min(1, raw));
 
-  const linesCount = aboutLineCharMap.length;
+  const linesCount = aboutLineEls.length;
   const segment = 1 / linesCount;
 
-  aboutLineCharMap.forEach((_, index) => {
+  aboutLineEls.forEach((line, index) => {
     const lineStart = index * segment;
-    const lineEnd = lineStart + segment * 1.15;
+    const lineEnd = lineStart + segment * 1.2;
     const localRaw = (progress - lineStart) / (lineEnd - lineStart);
     const localProgress = Math.max(0, Math.min(1, localRaw));
-    setLineProgress(index, localProgress);
+
+    line.style.setProperty("--ticker-progress", localProgress.toFixed(3));
+
+    if (localProgress > 0.45) line.classList.add("is-active");
+    else line.classList.remove("is-active");
   });
 
   if (aboutLogoBox && !prefersReducedMotion) {
@@ -608,8 +597,10 @@ function updateAboutCharacterScroll() {
   }
 }
 
-updateAboutCharacterScroll();
-window.addEventListener("resize", updateAboutCharacterScroll);
+if (aboutStage && aboutLineEls.length) {
+  updateAboutCharacterScroll();
+  window.addEventListener("resize", updateAboutCharacterScroll);
+}
 
 /* pricing reveal */
 const pricingCards = $$(".pricing-reveal");
@@ -653,27 +644,91 @@ if (!prefersReducedMotion) {
 /* feedback */
 const feedbackScrollArea = $("#feedbackScrollArea");
 const feedbackTrack = $("#feedbackTrack");
+const feedbackPrev = $("#feedbackPrev");
+const feedbackNext = $("#feedbackNext");
+
+let feedbackManualOffset = 0;
+
+function getFeedbackMaxTranslate() {
+  if (!feedbackTrack || !feedbackTrack.parentElement) return 0;
+  const viewport = feedbackTrack.parentElement;
+  return Math.max(0, feedbackTrack.scrollWidth - viewport.clientWidth);
+}
+
+function applyFeedbackTransform(autoProgress = null) {
+  if (!feedbackTrack || !feedbackTrack.parentElement) return;
+
+  const viewport = feedbackTrack.parentElement;
+  const maxTranslate = Math.max(0, feedbackTrack.scrollWidth - viewport.clientWidth);
+
+  if (window.innerWidth <= 980) {
+    feedbackTrack.style.transform = "none";
+    return;
+  }
+
+  const progress = autoProgress === null ? 0 : autoProgress;
+  const autoOffset = maxTranslate * progress;
+  const finalOffset = Math.max(0, Math.min(maxTranslate, autoOffset + feedbackManualOffset));
+
+  feedbackTrack.style.transform = `translate3d(-${finalOffset}px, 0, 0)`;
+
+  if (feedbackPrev) feedbackPrev.disabled = finalOffset <= 2;
+  if (feedbackNext) feedbackNext.disabled = finalOffset >= maxTranslate - 2;
+}
 
 function updateFeedbackScroll() {
-  if (!feedbackScrollArea || !feedbackTrack || window.innerWidth <= 980) return;
+  if (!feedbackScrollArea || !feedbackTrack || window.innerWidth <= 980) {
+    if (feedbackTrack) feedbackTrack.style.transform = "none";
+    return;
+  }
 
   const totalScroll = feedbackScrollArea.offsetHeight - window.innerHeight;
-  if (totalScroll <= 0) return;
+  if (totalScroll <= 0) {
+    applyFeedbackTransform(0);
+    return;
+  }
 
   const rect = feedbackScrollArea.getBoundingClientRect();
   const current = Math.min(Math.max(-rect.top, 0), totalScroll);
   const progress = current / totalScroll;
 
-  const viewport = feedbackTrack.parentElement;
-  if (!viewport) return;
+  applyFeedbackTransform(progress);
+}
 
-  const maxTranslate = Math.max(0, feedbackTrack.scrollWidth - viewport.clientWidth);
-  feedbackTrack.style.transform = `translate3d(-${maxTranslate * progress}px, 0, 0)`;
+function moveFeedback(direction) {
+  if (!feedbackTrack || !feedbackTrack.parentElement) return;
+
+  const step = 360;
+  const maxTranslate = getFeedbackMaxTranslate();
+
+  if (window.innerWidth <= 980) {
+    feedbackTrack.parentElement.scrollBy({
+      left: direction * step,
+      behavior: prefersReducedMotion ? "auto" : "smooth"
+    });
+    return;
+  }
+
+  feedbackManualOffset += direction * step;
+  feedbackManualOffset = Math.max(-maxTranslate, Math.min(maxTranslate, feedbackManualOffset));
+  updateFeedbackScroll();
+}
+
+if (feedbackPrev) {
+  feedbackPrev.addEventListener("click", () => moveFeedback(-1));
+}
+
+if (feedbackNext) {
+  feedbackNext.addEventListener("click", () => moveFeedback(1));
 }
 
 if (feedbackScrollArea && feedbackTrack) {
   updateFeedbackScroll();
-  window.addEventListener("resize", updateFeedbackScroll);
+  window.addEventListener("resize", () => {
+    const maxTranslate = getFeedbackMaxTranslate();
+    feedbackManualOffset = Math.max(-maxTranslate, Math.min(maxTranslate, feedbackManualOffset));
+    updateFeedbackScroll();
+  });
 }
 
 /* faq */
