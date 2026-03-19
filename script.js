@@ -205,14 +205,19 @@ if (!prefersReducedMotion) {
   animateBackground();
 }
 
-/* spotlight */
 function attachSpotlight(element) {
   let raf = 0;
+  let rect = null;
+
+  const updateRect = () => {
+    rect = element.getBoundingClientRect();
+  };
 
   const move = (event) => {
+    if (!rect) updateRect();
+
     cancelAnimationFrame(raf);
     raf = requestAnimationFrame(() => {
-      const rect = element.getBoundingClientRect();
       const x = ((event.clientX - rect.left) / rect.width) * 100;
       const y = ((event.clientY - rect.top) / rect.height) * 100;
 
@@ -221,14 +226,29 @@ function attachSpotlight(element) {
     });
   };
 
+  const enter = () => updateRect();
+
+  const leave = () => {
+    element.style.setProperty("--sx", "50%");
+    element.style.setProperty("--sy", "50%");
+  };
+
+  element.addEventListener("pointerenter", enter, { passive: true });
   element.addEventListener("pointermove", move, { passive: true });
+  element.addEventListener("pointerleave", leave, { passive: true });
+  window.addEventListener("resize", updateRect);
 }
 
 if (!prefersReducedMotion) {
-  $$(".spotlight").forEach(attachSpotlight);
-  $$(".btn").forEach(attachSpotlight);
-}
+  const spotlightTargets = [
+    ...$$(".feature-panel.spotlight"),
+    ...$$("#aboutLogoBox.spotlight"),
+    ...$$(".cta__card.spotlight"),
+    ...$$(".contact.spotlight")
+  ];
 
+  spotlightTargets.forEach(attachSpotlight);
+}
 /* magnetic */
 function attachMagnetic(element, strength = 0.14) {
   let raf = 0;
