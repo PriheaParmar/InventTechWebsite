@@ -1,26 +1,46 @@
-let scrollTicking = false;
-
-function handleScrollAnimations() {
-  updateProgressBar();
-  updateStripCards();
-  updateFeatureOnScroll();
-  updateIndustriesFall();
-  updateAboutCharacterScroll();
-  updateFeedbackScroll();
-
-  scrollTicking = false;
-}
-
-window.addEventListener("scroll", () => {
-  if (!scrollTicking) {
-    requestAnimationFrame(handleScrollAnimations);
-    scrollTicking = true;
-  }
-}, { passive: true });
-
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+let scrollTicking = false;
+let lastSubmittedName = "";
+let pendingFormSubmission = false;
+
+function isNearViewport(element, buffer = 180) {
+  if (!element) return false;
+  const rect = element.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  return rect.bottom >= -buffer && rect.top <= viewportHeight + buffer;
+}
+
+function queueScrollAnimations() {
+  if (scrollTicking) return;
+
+  scrollTicking = true;
+  requestAnimationFrame(() => {
+    updateProgressBar();
+
+    if (isNearViewport(statsStrip, 160)) updateStripCards();
+    if (isNearViewport(featureScrollArea, 260)) updateFeatureOnScroll();
+    if (isNearViewport(industriesFallWrap, 220)) updateIndustriesFall();
+    if (isNearViewport(aboutStage, 220)) updateAboutCharacterScroll();
+    if (isNearViewport(feedbackScrollArea, 260)) updateFeedbackScroll();
+
+    scrollTicking = false;
+  });
+}
+
+window.addEventListener("scroll", queueScrollAnimations, { passive: true });
+window.addEventListener("resize", () => {
+  requestAnimationFrame(() => {
+    updateProgressBar();
+    updateStripCards();
+    updateFeatureOnScroll();
+    updateIndustriesFall();
+    updateAboutCharacterScroll();
+    updateFeedbackScroll();
+  });
+}, { passive: true });
 
 /* year */
 const yearElement = $("#year");
@@ -57,23 +77,46 @@ window.addEventListener("load", () => {
   setTimeout(removeSplash, SPLASH_DURATION + 1800);
 });
 
-/* popup + sound */
-window.addEventListener("load", function () {
-  const form = document.getElementById("contactForm");
-  const popup = document.getElementById("popup");
-  const sound = document.getElementById("tingSound");
+/* theme */
+const themeToggle = $("#themeToggle");
+const root = document.documentElement;
 
-  if (!form || !popup || !sound) return;
+function getPreferredTheme() {
+  try {
+    const savedTheme = localStorage.getItem("inventtech-theme");
+    if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
+  } catch (error) {
+    console.warn("Theme storage unavailable:", error);
+  }
 
-  form.addEventListener("submit", function () {
-    popup.classList.add("show");
-    sound.play();
+  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+}
 
-    setTimeout(function () {
-      popup.classList.remove("show");
-    }, 3500);
+function applyTheme(theme) {
+  root.setAttribute("data-theme", theme);
+
+  if (themeToggle) {
+    const isLight = theme === "light";
+    themeToggle.setAttribute("aria-pressed", String(isLight));
+    themeToggle.setAttribute("aria-label", isLight ? "Switch to dark theme" : "Switch to light theme");
+  }
+}
+
+applyTheme(getPreferredTheme());
+
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    const current = root.getAttribute("data-theme") || "dark";
+    const next = current === "light" ? "dark" : "light";
+    applyTheme(next);
+
+    try {
+      localStorage.setItem("inventtech-theme", next);
+    } catch (error) {
+      console.warn("Could not save theme preference:", error);
+    }
   });
-});
+}
 
 /* nav */
 const navToggle = $("#navToggle");
@@ -119,7 +162,7 @@ $$('a[href^="#"]').forEach((link) => {
       block: "start"
     });
 
-    history.pushState(null, "", href);
+    history.replaceState(null, "", href);
   });
 });
 
@@ -135,7 +178,6 @@ function updateProgressBar() {
 }
 
 updateProgressBar();
-window.addEventListener("resize", updateProgressBar);
 
 /* reveal */
 const revealItems = $$(".reveal");
@@ -157,6 +199,39 @@ if (prefersReducedMotion) {
   revealItems.forEach((item) => revealObserver.observe(item));
 } else {
   revealItems.forEach((item) => item.classList.add("is-visible"));
+}
+
+/* scrollspy */
+const navSectionPairs = $$(".nav__link")
+  .map((link) => {
+    const href = link.getAttribute("href");
+    if (!href || !href.startsWith("#")) return null;
+    const section = $(href);
+    if (!section) return null;
+    return { link, section };
+  })
+  .filter(Boolean);
+
+if ("IntersectionObserver" in window && navSectionPairs.length) {
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      const visibleEntry = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (!visibleEntry) return;
+
+      navSectionPairs.forEach(({ link, section }) => {
+        link.classList.toggle("is-active", section === visibleEntry.target);
+      });
+    },
+    {
+      rootMargin: "-30% 0px -45% 0px",
+      threshold: [0.1, 0.2, 0.35, 0.5]
+    }
+  );
+
+  navSectionPairs.forEach(({ section }) => sectionObserver.observe(section));
 }
 
 /* ripple */
@@ -205,6 +280,7 @@ if (!prefersReducedMotion) {
   animateBackground();
 }
 
+/* spotlight */
 function attachSpotlight(element) {
   let raf = 0;
   let rect = null;
@@ -249,6 +325,8 @@ if (!prefersReducedMotion) {
 
   spotlightTargets.forEach(attachSpotlight);
 }
+
+/* magnetic */
 function attachMagnetic(element, strength = 0.12) {
   let raf = 0;
   let rect = null;
@@ -284,6 +362,10 @@ function attachMagnetic(element, strength = 0.12) {
   element.addEventListener("pointermove", onMove, { passive: true });
   element.addEventListener("pointerleave", reset, { passive: true });
   window.addEventListener("resize", updateRect);
+}
+
+if (!prefersReducedMotion) {
+  $$(".magnetic").forEach((element) => attachMagnetic(element, element.classList.contains("btn") ? 0.1 : 0.08));
 }
 
 /* tilt */
@@ -361,23 +443,98 @@ if (prefersReducedMotion) {
 /* contact form */
 const contactForm = $("#contactForm");
 const formMessage = $("#formMsg");
+const popup = $("#popup");
+const sound = $("#tingSound");
+const emailField = $("#contactEmail") || (contactForm ? $('input[name="email"]', contactForm) : null);
+const hiddenFrame = document.querySelector('iframe[name="hidden_iframe"]');
+
+const STRICT_EMAIL_REGEX = /^(?!.*\.\.)([A-Za-z0-9._%+-]+)@([A-Za-z0-9-]+\.)+[A-Za-z]{2,}$/;
+
+function showPopupMessage() {
+  if (!popup) return;
+  popup.classList.add("show");
+  setTimeout(() => popup.classList.remove("show"), 3200);
+}
+
+function playSuccessSound() {
+  if (!sound) return;
+  sound.currentTime = 0;
+  sound.play().catch(() => {});
+}
+
+function validateEmailField() {
+  if (!emailField) return true;
+
+  const value = emailField.value.trim();
+  emailField.value = value;
+  emailField.setCustomValidity("");
+
+  if (!value) return true;
+
+  const isValid = STRICT_EMAIL_REGEX.test(value);
+  if (!isValid) {
+    emailField.setCustomValidity("Please enter a valid email address like name@company.com");
+    return false;
+  }
+
+  return true;
+}
+
+if (emailField) {
+  emailField.addEventListener("input", () => {
+    emailField.setCustomValidity("");
+    formMessage && (formMessage.textContent = "");
+  });
+
+  emailField.addEventListener("blur", () => {
+    if (!validateEmailField()) {
+      emailField.reportValidity();
+    }
+  });
+}
 
 if (contactForm && formMessage) {
-  contactForm.addEventListener("submit", function (event) {
-    if (!contactForm.checkValidity()) {
+  const submitButton = $('button[type="submit"]', contactForm);
+
+  hiddenFrame?.addEventListener("load", () => {
+    if (!pendingFormSubmission) return;
+
+    pendingFormSubmission = false;
+    if (submitButton) submitButton.disabled = false;
+
+    formMessage.textContent = lastSubmittedName
+      ? `Thanks, ${lastSubmittedName}! Your demo request has been received.`
+      : "Thanks! Your demo request has been received.";
+
+    showPopupMessage();
+    playSuccessSound();
+    contactForm.reset();
+    if (emailField) emailField.setCustomValidity("");
+  });
+
+  contactForm.addEventListener("submit", (event) => {
+    if (emailField) emailField.setCustomValidity("");
+
+    const emailIsValid = validateEmailField();
+    const formIsValid = contactForm.checkValidity();
+
+    if (!formIsValid || !emailIsValid) {
+      event.preventDefault();
+      contactForm.reportValidity();
+      formMessage.textContent = "Please fix the highlighted fields before submitting.";
       return;
     }
 
     event.preventDefault();
 
-    const data = new FormData(contactForm);
-    const name = String(data.get("name") || "").trim();
+    const formData = new FormData(contactForm);
+    lastSubmittedName = String(formData.get("name") || "").trim();
+    formMessage.textContent = "Sending your request...";
+    pendingFormSubmission = true;
 
-    formMessage.textContent = name
-      ? `Thanks, ${name}! Your demo request has been received.`
-      : "Thanks! Your demo request has been received.";
+    if (submitButton) submitButton.disabled = true;
 
-    contactForm.reset();
+    HTMLFormElement.prototype.submit.call(contactForm);
   });
 }
 
@@ -408,7 +565,6 @@ if (statsStrip && stripCards.length) {
     stripCards.forEach((card) => card.classList.add("is-visible"));
   } else {
     updateStripCards();
-    window.addEventListener("resize", updateStripCards);
   }
 }
 
@@ -536,7 +692,6 @@ function updateFeatureOnScroll() {
 if (featureScrollArea && featurePanel) {
   setFeatureContent(0);
   updateFeatureOnScroll();
-  window.addEventListener("resize", updateFeatureOnScroll);
 }
 
 /* industries */
@@ -581,10 +736,9 @@ function updateIndustriesFall() {
 
 if (industriesFallWrap && industryCards.length) {
   updateIndustriesFall();
-  window.addEventListener("resize", updateIndustriesFall);
 }
 
-/* ABOUT vertical ticker */
+/* about character */
 const aboutStage = $("#aboutStage");
 const aboutLogoBox = $("#aboutLogoBox");
 const aboutLineEls = $$(".about-character__line");
@@ -631,7 +785,6 @@ function updateAboutCharacterScroll() {
 
 if (aboutStage && aboutLineEls.length) {
   updateAboutCharacterScroll();
-  window.addEventListener("resize", updateAboutCharacterScroll);
 }
 
 /* pricing reveal */
@@ -660,7 +813,6 @@ if (pricingCards.length) {
   }
 }
 
-/* pricing pointer glow */
 if (!prefersReducedMotion) {
   $$(".pricing-clean__card").forEach((card) => {
     card.addEventListener("pointermove", (event) => {
@@ -756,6 +908,7 @@ if (feedbackNext) {
 
 if (feedbackScrollArea && feedbackTrack) {
   updateFeedbackScroll();
+
   window.addEventListener("resize", () => {
     const maxTranslate = getFeedbackMaxTranslate();
     feedbackManualOffset = Math.max(-maxTranslate, Math.min(maxTranslate, feedbackManualOffset));
@@ -785,3 +938,6 @@ faqButtons.forEach((button) => {
     }
   });
 });
+
+/* initial run */
+queueScrollAnimations();
