@@ -126,6 +126,10 @@ function setNavState(open) {
   if (!navToggle || !navPanel) return;
   navPanel.classList.toggle("is-open", open);
   navToggle.setAttribute("aria-expanded", String(open));
+
+  if (window.innerWidth <= 760) {
+    document.body.style.overflow = open ? "hidden" : "";
+  }
 }
 
 if (navToggle && navPanel) {
@@ -146,7 +150,12 @@ if (navToggle && navPanel) {
     link.addEventListener("click", () => setNavState(false));
   });
 }
-
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 760) {
+    document.body.style.overflow = "";
+    setNavState(false);
+  }
+});
 /* smooth scroll */
 $$('a[href^="#"]').forEach((link) => {
   link.addEventListener("click", (event) => {
@@ -619,6 +628,42 @@ const featureData = [
     alt: "Billing preview"
   }
 ];
+/* mobile/tablet feature cards */
+function renderMobileFeatureCards() {
+  const featureScrollRoot = $("#featureScrollArea");
+  if (!featureScrollRoot) return;
+
+  let mobileGrid = $(".feature-mobile-grid", featureScrollRoot);
+
+  if (!mobileGrid) {
+    mobileGrid = document.createElement("div");
+    mobileGrid.className = "feature-mobile-grid";
+
+    mobileGrid.innerHTML = featureData.map((item) => `
+      <article class="feature-mobile-card spotlight">
+        <div class="feature-mobile-card__media">
+          <img src="${item.image}" alt="${item.alt}">
+        </div>
+        <div class="feature-mobile-card__body">
+          <div class="feature-mobile-card__meta">
+            <span class="feature-mobile-card__num">${item.num}</span>
+            <span class="feature-mobile-card__label">${item.label}</span>
+          </div>
+          <h3 class="feature-mobile-card__title">${item.title}</h3>
+          <p class="feature-mobile-card__desc">${item.desc}</p>
+        </div>
+      </article>
+    `).join("");
+
+    featureScrollRoot.appendChild(mobileGrid);
+
+    if (!prefersReducedMotion) {
+      $$(".spotlight", mobileGrid).forEach(attachSpotlight);
+    }
+  }
+}
+
+renderMobileFeatureCards();
 
 const featureScrollArea = $("#featureScrollArea");
 const featurePanel = $("#featurePanel");
