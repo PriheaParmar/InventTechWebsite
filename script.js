@@ -1,6 +1,9 @@
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const hasFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+const enableHeavyEffects = !prefersReducedMotion && hasFinePointer;
+
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 let scrollTicking = false;
 let lastSubmittedName = "";
@@ -39,6 +42,7 @@ window.addEventListener("resize", () => {
     updateIndustriesFall();
     updateAboutCharacterScroll();
     updateFeedbackScroll();
+    renderMobileFeatureCards();
   });
 }, { passive: true });
 
@@ -183,7 +187,7 @@ function updateProgressBar() {
   const doc = document.documentElement;
   const max = doc.scrollHeight - doc.clientHeight;
   const progress = max > 0 ? (doc.scrollTop / max) * 100 : 0;
-  progressBar.style.width = `${progress}%`;
+  progressBar.style.transform = `scaleX(${progress / 100})`  ;
 }
 
 updateProgressBar();
@@ -273,7 +277,7 @@ function handlePointerMove(event) {
   mouseY = (event.clientY / height - 0.5) * 2;
 }
 
-if (!prefersReducedMotion) {
+if (enableHeavyEffects) {
   window.addEventListener("mousemove", handlePointerMove, { passive: true });
 
   const animateBackground = () => {
@@ -324,12 +328,14 @@ function attachSpotlight(element) {
   window.addEventListener("resize", updateRect);
 }
 
-if (!prefersReducedMotion) {
+if (enableHeavyEffects) {
   const spotlightTargets = [
     ...$$(".feature-panel.spotlight"),
     ...$$("#aboutLogoBox.spotlight"),
     ...$$(".cta__card.spotlight"),
-    ...$$(".contact.spotlight")
+    ...$$(".contact.spotlight"),
+    ...$$(".footer.footer-contrast.spotlight")
+    
   ];
 
   spotlightTargets.forEach(attachSpotlight);
@@ -373,12 +379,12 @@ function attachMagnetic(element, strength = 0.12) {
   window.addEventListener("resize", updateRect);
 }
 
-if (!prefersReducedMotion) {
+if (enableHeavyEffects) {
   $$(".magnetic").forEach((element) => attachMagnetic(element, element.classList.contains("btn") ? 0.1 : 0.08));
 }
 
 /* tilt */
-if (!prefersReducedMotion) {
+if (enableHeavyEffects) {
   $$(".tilt").forEach((card) => {
     let raf = 0;
 
@@ -584,7 +590,7 @@ const featureData = [
     label: "Inventory",
     title: "Smart Inventory Tracking",
     desc: "Track stock levels in real time across locations with alerts, reorder points, and movement visibility.",
-    image: "https://plus.unsplash.com/premium_photo-1682147873962-b65d2f1b9d28?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/photos/inventory.webp",
     alt: "Inventory preview"
   },
   {
@@ -592,7 +598,7 @@ const featureData = [
     label: "Warehouses",
     title: "Multi-Warehouse Management",
     desc: "Manage transfers, dispatches, and branch-level stock from one dashboard.",
-    image: "https://plus.unsplash.com/premium_photo-1663091967607-2e15b89f4d6e?q=80&w=1172&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/photos/warehouse.webp",
     alt: "Warehouse preview"
   },
   {
@@ -600,7 +606,7 @@ const featureData = [
     label: "Reports",
     title: "Real-time Dashboard & Reports",
     desc: "Get analytics, approvals, summaries, and reporting in one live dashboard.",
-    image: "https://plus.unsplash.com/premium_photo-1661764570116-b1b0a2da783c?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/photos/dashboard.webp",
     alt: "Reports preview"
   },
   {
@@ -608,7 +614,7 @@ const featureData = [
     label: "Sales",
     title: "Sales & Purchase Management",
     desc: "Handle purchase orders, invoicing, approvals, and payment tracking in one workflow.",
-    image: "https://images.unsplash.com/photo-1642543348745-03b1219733d9?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/photos/sales.webp",
     alt: "Sales preview"
   },
   {
@@ -616,7 +622,7 @@ const featureData = [
     label: "CRM",
     title: "CRM & Customer Tracking",
     desc: "Follow up with customers and manage records from one clean workspace.",
-    image: "https://plus.unsplash.com/premium_photo-1661515854369-6e14c3a030dc?q=80&w=1332&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/photos/customer.webp",
     alt: "CRM preview"
   },
   {
@@ -624,46 +630,48 @@ const featureData = [
     label: "Billing",
     title: "Barcode & Billing Integration",
     desc: "Scan barcodes, update inventory, and generate invoices faster.",
-    image: "https://images.unsplash.com/photo-1735825764478-674bb8df9d4a?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    image: "/photos/billing.webp",
     alt: "Billing preview"
   }
 ];
-/* mobile/tablet feature cards */
 function renderMobileFeatureCards() {
   const featureScrollRoot = $("#featureScrollArea");
-  if (!featureScrollRoot) return;
+  if (!featureScrollRoot || window.innerWidth > 980) return;
 
   let mobileGrid = $(".feature-mobile-grid", featureScrollRoot);
+  if (mobileGrid) return;
 
-  if (!mobileGrid) {
-    mobileGrid = document.createElement("div");
-    mobileGrid.className = "feature-mobile-grid";
+  mobileGrid = document.createElement("div");
+  mobileGrid.className = "feature-mobile-grid";
 
-    mobileGrid.innerHTML = featureData.map((item) => `
-      <article class="feature-mobile-card spotlight">
-        <div class="feature-mobile-card__media">
-          <img src="${item.image}" alt="${item.alt}">
+  mobileGrid.innerHTML = featureData.map((item) => `
+    <article class="feature-mobile-card spotlight">
+      <div class="feature-mobile-card__media">
+        <img
+          src="${item.image}"
+          alt="${item.alt}"
+          loading="lazy"
+          width="1170"
+          height="780"
+        >
+      </div>
+      <div class="feature-mobile-card__body">
+        <div class="feature-mobile-card__meta">
+          <span class="feature-mobile-card__num">${item.num}</span>
+          <span class="feature-mobile-card__label">${item.label}</span>
         </div>
-        <div class="feature-mobile-card__body">
-          <div class="feature-mobile-card__meta">
-            <span class="feature-mobile-card__num">${item.num}</span>
-            <span class="feature-mobile-card__label">${item.label}</span>
-          </div>
-          <h3 class="feature-mobile-card__title">${item.title}</h3>
-          <p class="feature-mobile-card__desc">${item.desc}</p>
-        </div>
-      </article>
-    `).join("");
+        <h3 class="feature-mobile-card__title">${item.title}</h3>
+        <p class="feature-mobile-card__desc">${item.desc}</p>
+      </div>
+    </article>
+  `).join("");
 
-    featureScrollRoot.appendChild(mobileGrid);
+  featureScrollRoot.appendChild(mobileGrid);
 
-    if (!prefersReducedMotion) {
-      $$(".spotlight", mobileGrid).forEach(attachSpotlight);
-    }
+  if (enableHeavyEffects) {
+    $$(".spotlight", mobileGrid).forEach(attachSpotlight);
   }
 }
-
-renderMobileFeatureCards();
 
 const featureScrollArea = $("#featureScrollArea");
 const featurePanel = $("#featurePanel");
@@ -744,8 +752,15 @@ const industriesFallWrap = $("#industriesFall");
 const industryCards = $$(".industry-fall");
 
 function updateIndustriesFall() {
-  if (!industriesFallWrap || !industryCards.length) return;
+   if (!industriesFallWrap || !industryCards.length) return;
 
+  if (window.innerWidth <= 760 || prefersReducedMotion) {
+    industryCards.forEach((card) => {
+      card.style.opacity = "1";
+      card.style.transform = "none";
+    });
+    return;
+  }
   if (prefersReducedMotion) {
     industryCards.forEach((card) => {
       card.style.opacity = "1";
@@ -796,8 +811,18 @@ aboutLineEls.forEach((line) => {
 
 function updateAboutCharacterScroll() {
   if (!aboutStage || !aboutLineEls.length) return;
-  if (window.innerWidth < 768) return;
 
+  if (window.innerWidth < 768 || prefersReducedMotion) {
+    aboutLineEls.forEach((line) => {
+      line.style.setProperty("--ticker-progress", "1");
+      line.classList.add("is-active");
+    });
+
+    if (aboutLogoBox) {
+      aboutLogoBox.style.transform = "none";
+    }
+    return;
+  }
   const rect = aboutStage.getBoundingClientRect();
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
@@ -821,7 +846,7 @@ function updateAboutCharacterScroll() {
     else line.classList.remove("is-active");
   });
 
-  if (aboutLogoBox && !prefersReducedMotion) {
+  if (aboutLogoBox && enableHeavyEffects) {
     const moveY = -18 * progress;
     const scale = 1 + progress * 0.02;
     aboutLogoBox.style.transform = `translate3d(0, ${moveY}px, 0) scale(${scale})`;
@@ -858,7 +883,7 @@ if (pricingCards.length) {
   }
 }
 
-if (!prefersReducedMotion) {
+if (enableHeavyEffects) {
   $$(".pricing-clean__card").forEach((card) => {
     card.addEventListener("pointermove", (event) => {
       const rect = card.getBoundingClientRect();
