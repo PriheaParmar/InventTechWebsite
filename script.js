@@ -1,50 +1,81 @@
+const root = document.documentElement;
+const doc = document.documentElement;
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const hasFinePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
-const enableHeavyEffects = !prefersReducedMotion && hasFinePointer;
+const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection || null;
+const saveDataEnabled = Boolean(connection && connection.saveData);
+const deviceMemory = Number(navigator.deviceMemory || 0);
+const hardwareConcurrency = Number(navigator.hardwareConcurrency || 0);
+const isLowPowerDevice =
+  saveDataEnabled ||
+  (deviceMemory > 0 && deviceMemory <= 4) ||
+  (hardwareConcurrency > 0 && hardwareConcurrency <= 4);
+
+const enableHeavyEffects = !prefersReducedMotion && hasFinePointer && !isLowPowerDevice;
+
+root.setAttribute("data-performance", enableHeavyEffects ? "full" : "lite");
 
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 
+let viewportHeight = window.innerHeight || doc.clientHeight;
+let viewportWidth = window.innerWidth || doc.clientWidth;
 let scrollTicking = false;
+let resizeTicking = false;
 let lastSubmittedName = "";
 let pendingFormSubmission = false;
+
+function refreshViewportMetrics() {
+  viewportHeight = window.innerHeight || doc.clientHeight;
+  viewportWidth = window.innerWidth || doc.clientWidth;
+}
 
 function isNearViewport(element, buffer = 180) {
   if (!element) return false;
   const rect = element.getBoundingClientRect();
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
   return rect.bottom >= -buffer && rect.top <= viewportHeight + buffer;
+}
+
+function runFrameUpdates() {
+  updateProgressBar();
+  updateActiveNavLink();
+
+  if (resizeTicking) {
+    updateFeedbackMetrics();
+    renderMobileFeatureCards();
+
+    if (viewportWidth > 760) {
+      document.body.style.overflow = "";
+      setNavState(false);
+    }
+  }
+
+  if (isNearViewport(statsStrip, 160)) updateStripCards();
+  if (isNearViewport(featureScrollArea, 260)) updateFeatureOnScroll();
+  if (isNearViewport(industriesFallWrap, 220)) updateIndustriesFall();
+  if (isNearViewport(aboutStage, 220)) updateAboutCharacterScroll();
+  if (isNearViewport(feedbackScrollArea, 260)) updateFeedbackScroll();
+
+  scrollTicking = false;
+  resizeTicking = false;
 }
 
 function queueScrollAnimations() {
   if (scrollTicking) return;
-
   scrollTicking = true;
-  requestAnimationFrame(() => {
-    updateProgressBar();
+  requestAnimationFrame(runFrameUpdates);
+}
 
-    if (isNearViewport(statsStrip, 160)) updateStripCards();
-    if (isNearViewport(featureScrollArea, 260)) updateFeatureOnScroll();
-    if (isNearViewport(industriesFallWrap, 220)) updateIndustriesFall();
-    if (isNearViewport(aboutStage, 220)) updateAboutCharacterScroll();
-    if (isNearViewport(feedbackScrollArea, 260)) updateFeedbackScroll();
+function queueResizeWork() {
+  refreshViewportMetrics();
 
-    scrollTicking = false;
-  });
+  if (resizeTicking) return;
+  resizeTicking = true;
+  requestAnimationFrame(runFrameUpdates);
 }
 
 window.addEventListener("scroll", queueScrollAnimations, { passive: true });
-window.addEventListener("resize", () => {
-  requestAnimationFrame(() => {
-    updateProgressBar();
-    updateStripCards();
-    updateFeatureOnScroll();
-    updateIndustriesFall();
-    updateAboutCharacterScroll();
-    updateFeedbackScroll();
-    renderMobileFeatureCards();
-  });
-}, { passive: true });
+window.addEventListener("resize", queueResizeWork, { passive: true });
 
 /* year */
 const yearElement = $("#year");
@@ -83,7 +114,6 @@ window.addEventListener("load", () => {
 
 /* theme */
 const themeToggle = $("#themeToggle");
-const root = document.documentElement;
 
 function getPreferredTheme() {
   try {
@@ -131,63 +161,19 @@ function setNavState(open) {
   navPanel.classList.toggle("is-open", open);
   navToggle.setAttribute("aria-expanded", String(open));
 
-  if (window.innerWidth <= 760) {
+  if (viewportWidth <= 760) {
     document.body.style.overflow = open ? "hidden" : "";
   }
 }
-
-if (navToggle && navPanel) {
-  navToggle.addEventListener("click", () => {
-    setNavState(!navPanel.classList.contains("is-open"));
-  });
-
-  document.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!(target instanceof Node)) return;
-
-    if (!navPanel.contains(target) && !navToggle.contains(target)) {
-      setNavState(false);
-    }
-  });
-
-  $$(".nav__link", navPanel).forEach((link) => {
-    link.addEventListener("click", () => setNavState(false));
-  });
-}
-window.addEventListener("resize", () => {
-  if (window.innerWidth > 760) {
-    document.body.style.overflow = "";
-    setNavState(false);
-  }
-});
-/* smooth scroll */
-$$('a[href^="#"]').forEach((link) => {
-  link.addEventListener("click", (event) => {
-    const href = link.getAttribute("href");
-    if (!href || href === "#") return;
-
-    const target = $(href);
-    if (!target) return;
-
-    event.preventDefault();
-    target.scrollIntoView({
-      behavior: prefersReducedMotion ? "auto" : "smooth",
-      block: "start"
-    });
-
-    history.replaceState(null, "", href);
-  });
-});
 
 /* progress */
 const progressBar = $("#progressBar");
 
 function updateProgressBar() {
   if (!progressBar) return;
-  const doc = document.documentElement;
   const max = doc.scrollHeight - doc.clientHeight;
   const progress = max > 0 ? (doc.scrollTop / max) * 100 : 0;
-  progressBar.style.transform = `scaleX(${progress / 100})`  ;
+  progressBar.style.transform = `scaleX(${progress / 100})`;
 }
 
 updateProgressBar();
@@ -215,41 +201,64 @@ if (prefersReducedMotion) {
 }
 
 /* scrollspy */
-const navSectionPairs = $$(".nav__link")
+const allNavSectionPairs = $$(".nav__link")
   .map((link) => {
     const href = link.getAttribute("href");
     if (!href || !href.startsWith("#")) return null;
     const section = $(href);
     if (!section) return null;
-    return { link, section };
+    return { link, section, href };
   })
   .filter(Boolean);
 
-if ("IntersectionObserver" in window && navSectionPairs.length) {
-  const sectionObserver = new IntersectionObserver(
-    (entries) => {
-      const visibleEntry = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+const homeNavPair = allNavSectionPairs.find((pair) => pair.href === "#top") || null;
+const navSectionPairs = allNavSectionPairs.filter((pair) => pair.href !== "#top");
 
-      if (!visibleEntry) return;
+function updateActiveNavLink() {
+  const allLinks = allNavSectionPairs.map(({ link }) => link);
+  if (!allLinks.length) return;
 
-      navSectionPairs.forEach(({ link, section }) => {
-        link.classList.toggle("is-active", section === visibleEntry.target);
-      });
-    },
-    {
-      rootMargin: "-30% 0px -45% 0px",
-      threshold: [0.1, 0.2, 0.35, 0.5]
+  const siteHeader = $(".site-header");
+  const headerOffset = (siteHeader?.offsetHeight || 84) + 20;
+  const probeLine = Math.max(headerOffset + 8, viewportHeight * 0.22);
+  const scrollTop = window.scrollY || window.pageYOffset || doc.scrollTop || 0;
+  const firstTrackedSection = navSectionPairs[0]?.section || null;
+  const firstTrackedTop = firstTrackedSection ? firstTrackedSection.offsetTop : Infinity;
+
+  let activeLink = homeNavPair?.link || allLinks[0];
+  let bestMatch = null;
+  let fallbackMatch = null;
+  let fallbackTop = -Infinity;
+
+  for (const pair of navSectionPairs) {
+    const rect = pair.section.getBoundingClientRect();
+
+    if (rect.top <= probeLine && rect.bottom > probeLine) {
+      bestMatch = pair;
+      break;
     }
-  );
 
-  navSectionPairs.forEach(({ section }) => sectionObserver.observe(section));
+    if (rect.top <= probeLine && rect.top > fallbackTop) {
+      fallbackMatch = pair;
+      fallbackTop = rect.top;
+    }
+  }
+
+  if (bestMatch) {
+    activeLink = bestMatch.link;
+  } else if (scrollTop + headerOffset >= firstTrackedTop - 80 && fallbackMatch) {
+    activeLink = fallbackMatch.link;
+  } else if (scrollTop + headerOffset >= firstTrackedTop - 80 && navSectionPairs.length) {
+    activeLink = navSectionPairs[0].link;
+  }
+
+  allLinks.forEach((link) => {
+    link.classList.toggle("is-active", link === activeLink);
+  });
 }
 
-/* ripple */
-function createRipple(event) {
-  const button = event.currentTarget;
+/* delegated clicks + ripple */
+function createRipple(event, button) {
   if (!(button instanceof HTMLElement)) return;
 
   const rect = button.getBoundingClientRect();
@@ -259,38 +268,135 @@ function createRipple(event) {
   ink.style.top = `${event.clientY - rect.top}px`;
 
   button.appendChild(ink);
-  ink.addEventListener("animationend", () => ink.remove());
+  ink.addEventListener("animationend", () => ink.remove(), { once: true });
 }
 
-$$(".ripple").forEach((button) => button.addEventListener("click", createRipple));
+function smoothScrollToHash(hash) {
+  if (!hash || hash === "#") return false;
+  const target = $(hash);
+  if (!target) return false;
+
+  target.scrollIntoView({
+    behavior: prefersReducedMotion ? "auto" : "smooth",
+    block: "start"
+  });
+
+  if (window.location.hash !== hash) {
+    history.replaceState(null, "", hash);
+  }
+
+  return true;
+}
+
+document.addEventListener("click", (event) => {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+
+  const navToggleButton = target.closest("#navToggle");
+  if (navToggleButton) {
+    setNavState(!navPanel?.classList.contains("is-open"));
+    return;
+  }
+
+  const faqButton = target.closest(".faq-q");
+  if (faqButton instanceof HTMLButtonElement) {
+    const item = faqButton.closest(".faq-item");
+    if (!item) return;
+
+    const isOpen = item.classList.contains("is-open");
+
+    $$(".faq-item").forEach((faqItem) => {
+      faqItem.classList.remove("is-open");
+      const trigger = $(".faq-q", faqItem);
+      if (trigger) trigger.setAttribute("aria-expanded", "false");
+    });
+
+    if (!isOpen) {
+      item.classList.add("is-open");
+      faqButton.setAttribute("aria-expanded", "true");
+    }
+
+    return;
+  }
+
+  const anchor = target.closest('a[href^="#"]');
+  if (anchor instanceof HTMLAnchorElement) {
+    const href = anchor.getAttribute("href");
+
+    if (href && href !== "#" && smoothScrollToHash(href)) {
+      event.preventDefault();
+
+      if (navPanel?.contains(anchor)) {
+        setNavState(false);
+      }
+    }
+  }
+
+  const rippleButton = target.closest(".ripple");
+  if (rippleButton && event instanceof MouseEvent) {
+    createRipple(event, rippleButton);
+  }
+
+  if (navPanel && navToggle && !navPanel.contains(target) && !navToggle.contains(target)) {
+    setNavState(false);
+  }
+});
 
 /* background motion */
 let mouseX = 0;
 let mouseY = 0;
 let smoothX = 0;
 let smoothY = 0;
+let backgroundFrame = 0;
+let pageVisible = !document.hidden;
+
+function commitBackgroundPosition() {
+  root.style.setProperty("--mx", smoothX.toFixed(3));
+  root.style.setProperty("--my", smoothY.toFixed(3));
+}
+
+function animateBackground() {
+  backgroundFrame = 0;
+
+  smoothX += (mouseX - smoothX) * 0.08;
+  smoothY += (mouseY - smoothY) * 0.08;
+
+  commitBackgroundPosition();
+
+  if (!pageVisible) return;
+
+  if (Math.abs(mouseX - smoothX) > 0.001 || Math.abs(mouseY - smoothY) > 0.001) {
+    backgroundFrame = requestAnimationFrame(animateBackground);
+  }
+}
+
+function queueBackgroundFrame() {
+  if (!pageVisible || backgroundFrame) return;
+  backgroundFrame = requestAnimationFrame(animateBackground);
+}
 
 function handlePointerMove(event) {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  mouseX = (event.clientX / width - 0.5) * 2;
-  mouseY = (event.clientY / height - 0.5) * 2;
+  mouseX = (event.clientX / viewportWidth - 0.5) * 2;
+  mouseY = (event.clientY / viewportHeight - 0.5) * 2;
+  queueBackgroundFrame();
 }
 
 if (enableHeavyEffects) {
   window.addEventListener("mousemove", handlePointerMove, { passive: true });
 
-  const animateBackground = () => {
-    smoothX += (mouseX - smoothX) * 0.06;
-    smoothY += (mouseY - smoothY) * 0.06;
+  document.addEventListener("visibilitychange", () => {
+    pageVisible = !document.hidden;
 
-    document.documentElement.style.setProperty("--mx", smoothX.toFixed(3));
-    document.documentElement.style.setProperty("--my", smoothY.toFixed(3));
+    if (!pageVisible && backgroundFrame) {
+      cancelAnimationFrame(backgroundFrame);
+      backgroundFrame = 0;
+      return;
+    }
 
-    requestAnimationFrame(animateBackground);
-  };
+    queueBackgroundFrame();
+  });
 
-  animateBackground();
+  commitBackgroundPosition();
 }
 
 /* spotlight */
@@ -315,17 +421,13 @@ function attachSpotlight(element) {
     });
   };
 
-  const enter = () => updateRect();
-
-  const leave = () => {
+  element.addEventListener("pointerenter", updateRect, { passive: true });
+  element.addEventListener("pointermove", move, { passive: true });
+  element.addEventListener("pointerleave", () => {
+    rect = null;
     element.style.setProperty("--sx", "50%");
     element.style.setProperty("--sy", "50%");
-  };
-
-  element.addEventListener("pointerenter", enter, { passive: true });
-  element.addEventListener("pointermove", move, { passive: true });
-  element.addEventListener("pointerleave", leave, { passive: true });
-  window.addEventListener("resize", updateRect);
+  }, { passive: true });
 }
 
 if (enableHeavyEffects) {
@@ -335,7 +437,6 @@ if (enableHeavyEffects) {
     ...$$(".cta__card.spotlight"),
     ...$$(".contact.spotlight"),
     ...$$(".footer.footer-contrast.spotlight")
-    
   ];
 
   spotlightTargets.forEach(attachSpotlight);
@@ -357,7 +458,6 @@ function attachMagnetic(element, strength = 0.12) {
     raf = requestAnimationFrame(() => {
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-
       const deltaX = (event.clientX - centerX) * strength;
       const deltaY = (event.clientY - centerY) * strength;
 
@@ -366,17 +466,13 @@ function attachMagnetic(element, strength = 0.12) {
     });
   };
 
-  const onEnter = () => updateRect();
-
-  const reset = () => {
+  element.addEventListener("pointerenter", updateRect, { passive: true });
+  element.addEventListener("pointermove", onMove, { passive: true });
+  element.addEventListener("pointerleave", () => {
+    rect = null;
     element.style.setProperty("--bx", "0px");
     element.style.setProperty("--by", "0px");
-  };
-
-  element.addEventListener("pointerenter", onEnter, { passive: true });
-  element.addEventListener("pointermove", onMove, { passive: true });
-  element.addEventListener("pointerleave", reset, { passive: true });
-  window.addEventListener("resize", updateRect);
+  }, { passive: true });
 }
 
 if (enableHeavyEffects) {
@@ -387,14 +483,19 @@ if (enableHeavyEffects) {
 if (enableHeavyEffects) {
   $$(".tilt").forEach((card) => {
     let raf = 0;
+    let rect = null;
+
+    const updateRect = () => {
+      rect = card.getBoundingClientRect();
+    };
 
     const onMove = (event) => {
+      if (!rect) updateRect();
+
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const rect = card.getBoundingClientRect();
         const px = (event.clientX - rect.left) / rect.width;
         const py = (event.clientY - rect.top) / rect.height;
-
         const rotateY = (px - 0.5) * 10;
         const rotateX = (0.5 - py) * 8;
 
@@ -402,12 +503,12 @@ if (enableHeavyEffects) {
       });
     };
 
-    const onLeave = () => {
-      card.style.transform = "";
-    };
-
+    card.addEventListener("pointerenter", updateRect, { passive: true });
     card.addEventListener("pointermove", onMove, { passive: true });
-    card.addEventListener("pointerleave", onLeave);
+    card.addEventListener("pointerleave", () => {
+      rect = null;
+      card.style.transform = "";
+    });
   });
 }
 
@@ -561,9 +662,9 @@ function updateStripCards() {
   if (!statsStrip || !stripCards.length) return;
 
   const rect = statsStrip.getBoundingClientRect();
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-  const start = viewportHeight * 0.88;
-  const end = viewportHeight * 0.18;
+  const sectionViewportHeight = viewportHeight;
+  const start = sectionViewportHeight * 0.88;
+  const end = sectionViewportHeight * 0.18;
   const rawProgress = (start - rect.top) / (start - end);
   const progress = Math.max(0, Math.min(1, rawProgress));
 
@@ -590,7 +691,7 @@ const featureData = [
     label: "Inventory",
     title: "Smart Inventory Tracking",
     desc: "Track stock levels in real time across locations with alerts, reorder points, and movement visibility.",
-    image: "/photos/inventory.webp",
+    image: "photos/inventory.webp",
     alt: "Inventory preview"
   },
   {
@@ -598,7 +699,7 @@ const featureData = [
     label: "Warehouses",
     title: "Multi-Warehouse Management",
     desc: "Manage transfers, dispatches, and branch-level stock from one dashboard.",
-    image: "/photos/warehouse.webp",
+    image: "photos/warehouse.webp",
     alt: "Warehouse preview"
   },
   {
@@ -606,7 +707,7 @@ const featureData = [
     label: "Reports",
     title: "Real-time Dashboard & Reports",
     desc: "Get analytics, approvals, summaries, and reporting in one live dashboard.",
-    image: "/photos/dashboard.webp",
+    image: "photos/dashboard.webp",
     alt: "Reports preview"
   },
   {
@@ -614,7 +715,7 @@ const featureData = [
     label: "Sales",
     title: "Sales & Purchase Management",
     desc: "Handle purchase orders, invoicing, approvals, and payment tracking in one workflow.",
-    image: "/photos/sales.webp",
+    image: "photos/sales.webp",
     alt: "Sales preview"
   },
   {
@@ -622,7 +723,7 @@ const featureData = [
     label: "CRM",
     title: "CRM & Customer Tracking",
     desc: "Follow up with customers and manage records from one clean workspace.",
-    image: "/photos/customer.webp",
+    image: "photos/customer.webp",
     alt: "CRM preview"
   },
   {
@@ -630,13 +731,13 @@ const featureData = [
     label: "Billing",
     title: "Barcode & Billing Integration",
     desc: "Scan barcodes, update inventory, and generate invoices faster.",
-    image: "/photos/billing.webp",
+    image: "photos/billing.webp",
     alt: "Billing preview"
   }
 ];
 function renderMobileFeatureCards() {
   const featureScrollRoot = $("#featureScrollArea");
-  if (!featureScrollRoot || window.innerWidth > 980) return;
+  if (!featureScrollRoot || viewportWidth > 980) return;
 
   let mobileGrid = $(".feature-mobile-grid", featureScrollRoot);
   if (mobileGrid) return;
@@ -651,6 +752,7 @@ function renderMobileFeatureCards() {
           src="${item.image}"
           alt="${item.alt}"
           loading="lazy"
+          decoding="async"
           width="1170"
           height="780"
         >
@@ -684,6 +786,8 @@ const featureImage = $("#featureImage");
 
 let activeFeatureIndex = 0;
 let featureAnimating = false;
+let featureChangeStartTimer = 0;
+let featureChangeEndTimer = 0;
 
 function setFeatureContent(index) {
   const item = featureData[index];
@@ -694,39 +798,46 @@ function setFeatureContent(index) {
   if (featureLabel) featureLabel.textContent = item.label;
   if (featureTitle) featureTitle.textContent = item.title;
   if (featureDesc) featureDesc.textContent = item.desc;
+
   if (featureImage) {
-    featureImage.src = item.image;
+    if (featureImage.getAttribute("src") !== item.image) {
+      featureImage.src = item.image;
+    }
     featureImage.alt = item.alt;
   }
 }
 
 function animateFeatureChange(index) {
-  if (!featurePanel || featureAnimating || index === activeFeatureIndex) return;
+  if (!featurePanel || index === activeFeatureIndex) return;
 
+  if (featureChangeStartTimer) clearTimeout(featureChangeStartTimer);
+  if (featureChangeEndTimer) clearTimeout(featureChangeEndTimer);
+
+  const wasAnimating = featureAnimating;
   featureAnimating = true;
   featurePanel.classList.remove("is-entering");
   featurePanel.classList.add("is-changing");
 
-  setTimeout(() => {
+  featureChangeStartTimer = window.setTimeout(() => {
     setFeatureContent(index);
     activeFeatureIndex = index;
     featurePanel.classList.remove("is-changing");
     featurePanel.classList.add("is-entering");
 
-    setTimeout(() => {
+    featureChangeEndTimer = window.setTimeout(() => {
       featurePanel.classList.remove("is-entering");
       featureAnimating = false;
-    }, 700);
-  }, 220);
+    }, 460);
+  }, wasAnimating ? 100 : 160);
 }
 
 const featureSteps = $$(".feature-step");
 
 function updateFeatureOnScroll() {
-  if (!featureScrollArea || !featureSteps.length || window.innerWidth <= 980) return;
+  if (!featureScrollArea || !featureSteps.length || viewportWidth <= 980) return;
 
   let activeIndex = 0;
-  const triggerPoint = window.innerHeight * 0.45;
+  const triggerPoint = viewportHeight * 0.45;
 
   featureSteps.forEach((step, index) => {
     const rect = step.getBoundingClientRect();
@@ -754,7 +865,7 @@ const industryCards = $$(".industry-fall");
 function updateIndustriesFall() {
    if (!industriesFallWrap || !industryCards.length) return;
 
-  if (window.innerWidth <= 760 || prefersReducedMotion) {
+  if (viewportWidth <= 760 || prefersReducedMotion) {
     industryCards.forEach((card) => {
       card.style.opacity = "1";
       card.style.transform = "none";
@@ -770,9 +881,9 @@ function updateIndustriesFall() {
   }
 
   const rect = industriesFallWrap.getBoundingClientRect();
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-  const start = viewportHeight * 0.92;
-  const end = viewportHeight * 0.16;
+  const sectionViewportHeight = viewportHeight;
+  const start = sectionViewportHeight * 0.92;
+  const end = sectionViewportHeight * 0.16;
   const rawProgress = (start - rect.top) / (start - end);
   const progress = Math.max(0, Math.min(1, rawProgress));
 
@@ -812,7 +923,7 @@ aboutLineEls.forEach((line) => {
 function updateAboutCharacterScroll() {
   if (!aboutStage || !aboutLineEls.length) return;
 
-  if (window.innerWidth < 768 || prefersReducedMotion) {
+  if (viewportWidth < 768 || prefersReducedMotion) {
     aboutLineEls.forEach((line) => {
       line.style.setProperty("--ticker-progress", "1");
       line.classList.add("is-active");
@@ -824,10 +935,10 @@ function updateAboutCharacterScroll() {
     return;
   }
   const rect = aboutStage.getBoundingClientRect();
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const sectionViewportHeight = viewportHeight;
 
-  const sectionStart = viewportHeight * 0.82;
-  const sectionEnd = viewportHeight * 0.18;
+  const sectionStart = sectionViewportHeight * 0.82;
+  const sectionEnd = sectionViewportHeight * 0.18;
   const raw = (sectionStart - rect.top) / (sectionStart - sectionEnd);
   const progress = Math.max(0, Math.min(1, raw));
 
@@ -864,13 +975,20 @@ if (pricingCards.length) {
   if (prefersReducedMotion) {
     pricingCards.forEach((card) => card.classList.add("is-visible"));
   } else if ("IntersectionObserver" in window) {
+    let pricingRevealIndex = 0;
+
     const pricingObserver = new IntersectionObserver(
       (entries, observer) => {
-        entries.forEach((entry, index) => {
+        entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          setTimeout(() => {
+
+          const delay = pricingRevealIndex * 90;
+          pricingRevealIndex += 1;
+
+          window.setTimeout(() => {
             entry.target.classList.add("is-visible");
-          }, index * 100);
+          }, delay);
+
           observer.unobserve(entry.target);
         });
       },
@@ -885,13 +1003,23 @@ if (pricingCards.length) {
 
 if (enableHeavyEffects) {
   $$(".pricing-clean__card").forEach((card) => {
+    let rect = null;
+
+    const updateRect = () => {
+      rect = card.getBoundingClientRect();
+    };
+
+    card.addEventListener("pointerenter", updateRect, { passive: true });
     card.addEventListener("pointermove", (event) => {
-      const rect = card.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-      card.style.setProperty("--px", `${x}px`);
-      card.style.setProperty("--py", `${y}px`);
-    });
+      if (!rect) updateRect();
+
+      card.style.setProperty("--px", `${event.clientX - rect.left}px`);
+      card.style.setProperty("--py", `${event.clientY - rect.top}px`);
+    }, { passive: true });
+
+    card.addEventListener("pointerleave", () => {
+      rect = null;
+    }, { passive: true });
   });
 }
 
@@ -902,41 +1030,43 @@ const feedbackPrev = $("#feedbackPrev");
 const feedbackNext = $("#feedbackNext");
 
 let feedbackManualOffset = 0;
+let feedbackMaxTranslate = 0;
 
-function getFeedbackMaxTranslate() {
-  if (!feedbackTrack || !feedbackTrack.parentElement) return 0;
+function updateFeedbackMetrics() {
+  if (!feedbackTrack || !feedbackTrack.parentElement) {
+    feedbackMaxTranslate = 0;
+    return;
+  }
+
   const viewport = feedbackTrack.parentElement;
-  return Math.max(0, feedbackTrack.scrollWidth - viewport.clientWidth);
+  feedbackMaxTranslate = Math.max(0, feedbackTrack.scrollWidth - viewport.clientWidth);
+  feedbackManualOffset = Math.max(-feedbackMaxTranslate, Math.min(feedbackMaxTranslate, feedbackManualOffset));
 }
 
-function applyFeedbackTransform(autoProgress = null) {
-  if (!feedbackTrack || !feedbackTrack.parentElement) return;
+function applyFeedbackTransform(autoProgress = 0) {
+  if (!feedbackTrack) return;
 
-  const viewport = feedbackTrack.parentElement;
-  const maxTranslate = Math.max(0, feedbackTrack.scrollWidth - viewport.clientWidth);
-
-  if (window.innerWidth <= 980) {
+  if (viewportWidth <= 980) {
     feedbackTrack.style.transform = "none";
     return;
   }
 
-  const progress = autoProgress === null ? 0 : autoProgress;
-  const autoOffset = maxTranslate * progress;
-  const finalOffset = Math.max(0, Math.min(maxTranslate, autoOffset + feedbackManualOffset));
+  const autoOffset = feedbackMaxTranslate * autoProgress;
+  const finalOffset = Math.max(0, Math.min(feedbackMaxTranslate, autoOffset + feedbackManualOffset));
 
   feedbackTrack.style.transform = `translate3d(-${finalOffset}px, 0, 0)`;
 
   if (feedbackPrev) feedbackPrev.disabled = finalOffset <= 2;
-  if (feedbackNext) feedbackNext.disabled = finalOffset >= maxTranslate - 2;
+  if (feedbackNext) feedbackNext.disabled = finalOffset >= feedbackMaxTranslate - 2;
 }
 
 function updateFeedbackScroll() {
-  if (!feedbackScrollArea || !feedbackTrack || window.innerWidth <= 980) {
+  if (!feedbackScrollArea || !feedbackTrack || viewportWidth <= 980) {
     if (feedbackTrack) feedbackTrack.style.transform = "none";
     return;
   }
 
-  const totalScroll = feedbackScrollArea.offsetHeight - window.innerHeight;
+  const totalScroll = feedbackScrollArea.offsetHeight - viewportHeight;
   if (totalScroll <= 0) {
     applyFeedbackTransform(0);
     return;
@@ -953,9 +1083,8 @@ function moveFeedback(direction) {
   if (!feedbackTrack || !feedbackTrack.parentElement) return;
 
   const step = 360;
-  const maxTranslate = getFeedbackMaxTranslate();
 
-  if (window.innerWidth <= 980) {
+  if (viewportWidth <= 980) {
     feedbackTrack.parentElement.scrollBy({
       left: direction * step,
       behavior: prefersReducedMotion ? "auto" : "smooth"
@@ -964,7 +1093,7 @@ function moveFeedback(direction) {
   }
 
   feedbackManualOffset += direction * step;
-  feedbackManualOffset = Math.max(-maxTranslate, Math.min(maxTranslate, feedbackManualOffset));
+  feedbackManualOffset = Math.max(-feedbackMaxTranslate, Math.min(feedbackMaxTranslate, feedbackManualOffset));
   updateFeedbackScroll();
 }
 
@@ -977,37 +1106,14 @@ if (feedbackNext) {
 }
 
 if (feedbackScrollArea && feedbackTrack) {
+  updateFeedbackMetrics();
   updateFeedbackScroll();
-
-  window.addEventListener("resize", () => {
-    const maxTranslate = getFeedbackMaxTranslate();
-    feedbackManualOffset = Math.max(-maxTranslate, Math.min(maxTranslate, feedbackManualOffset));
-    updateFeedbackScroll();
-  });
 }
 
 /* faq */
-const faqButtons = $$(".faq-q");
-
-faqButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const item = button.closest(".faq-item");
-    if (!item) return;
-
-    const isOpen = item.classList.contains("is-open");
-
-    $$(".faq-item").forEach((faqItem) => {
-      faqItem.classList.remove("is-open");
-      const trigger = $(".faq-q", faqItem);
-      if (trigger) trigger.setAttribute("aria-expanded", "false");
-    });
-
-    if (!isOpen) {
-      item.classList.add("is-open");
-      button.setAttribute("aria-expanded", "true");
-    }
-  });
-});
 
 /* initial run */
 queueScrollAnimations();
+queueResizeWork();
+window.addEventListener("load", updateActiveNavLink, { once: true });
+F
